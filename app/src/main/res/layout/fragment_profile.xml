@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hồ sơ"
+            android:textSize="20sp"
+            android:fontFamily="@font/inter_bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Avatar + name card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/divider"
+            app:cardBackgroundColor="@color/surface">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:gravity="center">
+
+                <!-- Avatar -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_avatar"
+                        android:layout_width="88dp"
+                        android:layout_height="88dp"
+                        android:src="@drawable/ic_default_avatar"
+                        app:civ_border_color="@color/primary_light"
+                        app:civ_border_width="3dp"/>
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/fab_change_avatar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:src="@drawable/ic_camera"
+                        app:fabSize="mini"
+                        app:backgroundTint="@color/primary"
+                        app:tint="@color/white"/>
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_display_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="4dp"/>
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/text_secondary"/>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Settings card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/divider"
+            app:cardBackgroundColor="@color/surface">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <!-- Edit profile -->
+                <LinearLayout
+                    android:id="@+id/item_edit_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:background="?attr/selectableItemBackground">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_edit"
+                        app:tint="@color/text_secondary"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Chỉnh sửa hồ sơ"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginStart="14dp"/>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/text_hint"/>
+
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="@color/divider" android:layout_marginStart="50dp"/>
+
+                <!-- Notification toggle -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_notification"
+                        app:tint="@color/text_secondary"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Thông báo deadline"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginStart="14dp"/>
+
+                    <com.google.android.material.switchmaterial.SwitchMaterial
+                        android:id="@+id/switch_notifications"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Logout button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="Đăng xuất"
+            android:textColor="@color/priority_high_text"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:strokeColor="@color/priority_high_text"
+            app:cornerRadius="14dp"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

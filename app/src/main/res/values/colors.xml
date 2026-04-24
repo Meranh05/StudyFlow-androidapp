@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand colors -->
+    <color name="primary">#5E92F3</color>
+    <color name="primary_dark">#3D6FD6</color>
+    <color name="primary_light">#EEF3FE</color>
+    <color name="accent">#3D6FD6</color>
+
+    <!-- Background -->
+    <color name="background">#F8FAFF</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_variant">#F0F4FF</color>
+
+    <!-- Text -->
+    <color name="text_primary">#1A1F36</color>
+    <color name="text_secondary">#6B7280</color>
+    <color name="text_hint">#9CA3AF</color>
+
+    <!-- Priority colors (deadline cards) -->
+    <color name="priority_low_bg">#E8F5E9</color>
+    <color name="priority_low_text">#2E7D32</color>
+    <color name="priority_medium_bg">#FFF3E0</color>
+    <color name="priority_medium_text">#E65100</color>
+    <color name="priority_high_bg">#FFEBEE</color>
+    <color name="priority_high_text">#C62828</color>
+
+    <!-- Status -->
+    <color name="status_todo">#9CA3AF</color>
+    <color name="status_in_progress">#5E92F3</color>
+    <color name="status_done">#34A853</color>
+
+    <!-- Divider -->
+    <color name="divider">#E5E7EB</color>
+
+    <!-- White / Black -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

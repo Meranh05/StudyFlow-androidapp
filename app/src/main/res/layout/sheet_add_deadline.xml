@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:paddingBottom="40dp">
+
+    <!-- Handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:background="@color/divider"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tv_sheet_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Thêm deadline"
+        android:textSize="18sp"
+        android:fontFamily="@font/inter_bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="20dp"/>
+
+    <!-- Tiêu đề task -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tiêu đề *"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_marginBottom="14dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:imeOptions="actionNext"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Mô tả -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mô tả (tùy chọn)"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_marginBottom="14dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:maxLines="4"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Môn học dropdown -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Môn học"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_marginBottom="14dp">
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinner_subject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Chọn ngày giờ -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hạn nộp *"
+        android:textSize="13sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginBottom="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="14dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_pick_date"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Chọn ngày giờ"
+            android:textAllCaps="false"
+            android:minWidth="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:layout_marginEnd="12dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:icon="@drawable/ic_calendar"
+            app:iconPadding="8dp"
+            app:cornerRadius="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_selected_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Chưa chọn"
+            android:textSize="13sp"
+            android:textColor="@color/primary"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+
+    </LinearLayout>
+
+    <!-- Mức độ ưu tiên -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mức độ ưu tiên"
+        android:textSize="13sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginBottom="8dp"/>
+
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:selectionRequired="true"
+        android:layout_marginBottom="24dp">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🟢 Thấp"
+            style="@style/Widget.Material3.Chip.Filter"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🟡 Trung bình"
+            style="@style/Widget.Material3.Chip.Filter"
+            android:checked="true"/>
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🔴 Cao"
+            style="@style/Widget.Material3.Chip.Filter"/>
+
+    </com.google.android.material.chip.ChipGroup>
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <!-- Hủy -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+
+            android:text="Hủy"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            android:fontFamily="@font/inter_medium"
+
+            android:layout_marginEnd="8dp"
+
+            style="@style/Widget.Material3.Button.OutlinedButton"
+
+            app:cornerRadius="16dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="@color/primary"
+            android:textColor="@color/primary"/>
+
+        <!-- Lưu -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+
+            android:text="Lưu"
+            android:textAllCaps="false"
+            android:textSize="15sp"
+            android:fontFamily="@font/inter_medium"
+
+            android:layout_marginStart="8dp"
+
+            style="@style/Widget.Material3.Button"
+
+            app:cornerRadius="16dp"
+            app:backgroundTint="@color/primary"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+</LinearLayout>

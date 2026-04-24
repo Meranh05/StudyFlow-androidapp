@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.StudyFlow" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorSurface">@color/surface</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="materialButtonStyle">@style/Widget.StudyFlow.Button</item>
+        <item name="materialCardViewStyle">@style/Widget.StudyFlow.Card</item>
+    </style>
+
+    <style name="Widget.StudyFlow.Button" parent="Widget.Material3.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+    </style>
+
+    <style name="Widget.StudyFlow.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">0dp</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/divider</item>
+        <item name="cardBackgroundColor">@color/surface</item>
+    </style>
+
+    <style name="CalendarHeader" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+</resources>

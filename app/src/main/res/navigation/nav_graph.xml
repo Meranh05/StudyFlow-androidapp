@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.studyflow.ui.home.HomeFragment"
+        android:label="Trang chủ"/>
+
+    <fragment
+        android:id="@+id/nav_subjects"
+        android:name="com.example.studyflow.ui.subjects.SubjectsFragment"
+        android:label="Môn học"/>
+
+    <fragment
+        android:id="@+id/nav_deadlines"
+        android:name="com.example.studyflow.ui.deadlines.DeadlinesFragment"
+        android:label="Deadline"/>
+
+    <fragment
+        android:id="@+id/nav_calendar"
+        android:name="com.example.studyflow.ui.calendar.CalendarFragment"
+        android:label="Lịch"/>
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.studyflow.ui.profile.ProfileFragment"
+        android:label="Hồ sơ"/>
+
+</navigation>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lịch học"
+        android:textSize="20sp"
+        android:textColor="@color/text_primary"
+        android:padding="20dp"
+        android:paddingBottom="8dp"/>
+
+    <!-- CalendarView mặc định Android -->
+    <CalendarView
+        android:id="@+id/calendar_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_selected_date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hôm nay"
+        android:textSize="15sp"
+        android:textColor="@color/text_primary"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_day_deadlines"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp"
+        android:paddingTop="0dp"
+        android:clipToPadding="false"/>
+
+    <LinearLayout
+        android:id="@+id/layout_empty_day"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="✅"
+            android:textSize="40sp"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày này không có deadline"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"/>
+
+    </LinearLayout>
+
+</LinearLayout>

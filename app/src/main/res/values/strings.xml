@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">StudyFlow</string>
+
+    <!-- Auth -->
+    <string name="login">Đăng nhập</string>
+    <string name="register">Đăng ký</string>
+    <string name="email">Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="confirm_password">Xác nhận mật khẩu</string>
+    <string name="full_name">Họ và tên</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <string name="login_with_google">Đăng nhập bằng Google</string>
+    <string name="already_have_account">Đã có tài khoản? Đăng nhập</string>
+    <string name="no_account">Chưa có tài khoản? Đăng ký</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_home">Trang chủ</string>
+    <string name="nav_subjects">Môn học</string>
+    <string name="nav_deadlines">Deadline</string>
+    <string name="nav_calendar">Lịch</string>
+    <string name="nav_profile">Hồ sơ</string>
+
+    <!-- Home -->
+    <string name="greeting_morning">Chào buổi sáng, %s!</string>
+    <string name="greeting_afternoon">Buổi chiều vui vẻ, %s!</string>
+    <string name="greeting_evening">Chào buổi tối, %s!</string>
+    <string name="today_tasks">Hôm nay cần làm gì</string>
+    <string name="upcoming_deadlines">Deadline sắp tới</string>
+    <string name="no_tasks_today">Hôm nay không có task nào 🎉</string>
+
+    <!-- Subjects -->
+    <string name="subjects">Môn học</string>
+    <string name="add_subject">Thêm môn học</string>
+    <string name="subject_name">Tên môn học</string>
+    <string name="lecturer">Giảng viên</string>
+    <string name="credits">Số tín chỉ</string>
+    <string name="no_subjects">Chưa có môn học nào\nNhấn + để thêm môn mới</string>
+
+    <!-- Deadlines -->
+    <string name="deadlines">Deadline</string>
+    <string name="add_deadline">Thêm deadline</string>
+    <string name="deadline_title">Tiêu đề</string>
+    <string name="deadline_desc">Mô tả (tùy chọn)</string>
+    <string name="due_date">Hạn nộp</string>
+    <string name="priority">Mức độ ưu tiên</string>
+    <string name="priority_low">Thấp</string>
+    <string name="priority_medium">Trung bình</string>
+    <string name="priority_high">Cao</string>
+    <string name="status_todo">Chưa làm</string>
+    <string name="status_in_progress">Đang làm</string>
+    <string name="status_done">Hoàn thành</string>
+    <string name="no_deadlines">Không có deadline nào\nTuyệt vời! 🎉</string>
+
+    <!-- General -->
+    <string name="save">Lưu</string>
+    <string name="cancel">Hủy</string>
+    <string name="delete">Xóa</string>
+    <string name="edit">Chỉnh sửa</string>
+    <string name="loading">Đang tải…</string>
+    <string name="error_general">Có lỗi xảy ra, vui lòng thử lại</string>
+    <string name="error_empty_field">Vui lòng điền đầy đủ thông tin</string>
+    <string name="error_invalid_email">Email không hợp lệ</string>
+    <string name="error_password_short">Mật khẩu tối thiểu 6 ký tự</string>
+    <string name="error_password_mismatch">Mật khẩu không khớp</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="confirm_logout">Bạn có chắc muốn đăng xuất?</string>
+    <string name="confirm_delete">Bạn có chắc muốn xóa?</string>
+    <string name="app_title">StudyFlow</string>
+    <string name="app_subtitle">Quản lý học tập hiệu quả</string>
+    <string name="divider_text">  hoặc  </string>
+    <string name="register_link">Đăng ký ngay</string>
+</resources>
