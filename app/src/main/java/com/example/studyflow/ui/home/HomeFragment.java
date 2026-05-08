@@ -87,8 +87,26 @@ public class HomeFragment extends Fragment {
 
     private void setupRecyclerView() {
         adapter = new DeadlineAdapter(new DeadlineAdapter.OnDeadlineClickListener() {
-            @Override public void onEdit(com.example.studyflow.data.model.Deadline d) {}
-            @Override public void onDelete(com.example.studyflow.data.model.Deadline d) {}
+            @Override
+            public void onClick(com.example.studyflow.data.model.Deadline d) {
+                // Phương thức này bị thiếu, chúng ta thêm vào để sửa lỗi
+                AddEditDeadlineSheet sheet = AddEditDeadlineSheet.newInstance(userId, d);
+                sheet.show(getChildFragmentManager(), "edit_deadline");
+            }
+
+            @Override
+            public void onEdit(com.example.studyflow.data.model.Deadline d) {
+                // Bạn có thể dùng chung logic với onClick hoặc tùy chỉnh riêng
+                AddEditDeadlineSheet sheet = AddEditDeadlineSheet.newInstance(userId, d);
+                sheet.show(getChildFragmentManager(), "edit_deadline");
+            }
+
+            @Override
+            public void onDelete(com.example.studyflow.data.model.Deadline d) {
+                // Xử lý xóa deadline
+                deadlineViewModel.deleteDeadline(userId, d.getId());
+            }
+
             @Override
             public void onStatusChange(com.example.studyflow.data.model.Deadline d, String status) {
                 d.setStatus(status);

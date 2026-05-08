@@ -15,6 +15,7 @@ public class DeadlineAdapter extends RecyclerView.Adapter<DeadlineAdapter.ViewHo
     private final OnDeadlineClickListener listener;
 
     public interface OnDeadlineClickListener {
+        void onClick(Deadline deadline);
         void onEdit(Deadline deadline);
         void onDelete(Deadline deadline);
         void onStatusChange(Deadline deadline, String newStatus);
@@ -98,6 +99,9 @@ public class DeadlineAdapter extends RecyclerView.Adapter<DeadlineAdapter.ViewHo
             binding.tvStatus.setText(statusText);
             binding.tvStatus.setBackgroundColor(statusBg);
             binding.tvStatus.setTextColor(statusTextColor);
+
+            // Item click → show details
+            binding.getRoot().setOnClickListener(v -> listener.onClick(deadline));
 
             // Long press → edit/delete menu
             binding.getRoot().setOnLongClickListener(v -> {

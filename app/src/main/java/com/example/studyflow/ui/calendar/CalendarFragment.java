@@ -6,11 +6,14 @@ import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.example.studyflow.data.model.Deadline;
 import com.example.studyflow.databinding.FragmentCalendarBinding;
 import com.example.studyflow.ui.deadlines.DeadlineAdapter;
+import com.example.studyflow.ui.deadlines.AddEditDeadlineSheet;
 import com.example.studyflow.viewmodel.DeadlineViewModel;
+import com.example.studyflow.utils.DateUtils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -50,8 +53,29 @@ public class CalendarFragment extends Fragment {
     private void setupRecyclerView() {
         adapter = new DeadlineAdapter(
                 new DeadlineAdapter.OnDeadlineClickListener() {
-                    @Override public void onEdit(Deadline d) {}
-                    @Override public void onDelete(Deadline d) {}
+                    @Override
+                    public void onClick(Deadline d) {
+                        showDeadlineDetail(d);
+                    }
+
+                    @Override
+                    public void onEdit(Deadline d) {
+                        AddEditDeadlineSheet sheet = AddEditDeadlineSheet.newInstance(userId, d);
+                        sheet.show(getChildFragmentManager(), "edit_deadline_cal");
+                    }
+
+                    @Override
+                    public void onDelete(Deadline d) {
+                        new MaterialAlertDialogBuilder(requireContext())
+                                .setTitle("Xóa deadline?")
+                                .setMessage("Xóa \"" + d.getTitle() + "\"?")
+                                .setPositiveButton("Xóa", (dialog, which) -> {
+                                    deadlineViewModel.deleteDeadline(userId, d.getId());
+                                })
+                                .setNegativeButton("Hủy", null)
+                                .show();
+                    }
+
                     @Override
                     public void onStatusChange(Deadline d, String status) {
                         d.setStatus(status);
@@ -63,12 +87,43 @@ public class CalendarFragment extends Fragment {
         binding.rvDayDeadlines.setAdapter(adapter);
     }
 
-        private Calendar selectedDate = Calendar.getInstance();
+    private void showDeadlineDetail(Deadline deadline) {
+        String statusText;
+        switch (deadline.getStatus()) {
+            case "DONE": statusText = "Hoàn thành"; break;
+            case "IN_PROGRESS": statusText = "Đang làm"; break;
+            default: statusText = "Chưa làm"; break;
+        }
+
+        String message = "Môn học: " + deadline.getSubjectName() + "\n" +
+                "Hạn nộp: " + DateUtils.formatDateTime(deadline.getDueDate()) + "\n" +
+                "Độ ưu tiên: " + deadline.getPriority() + "\n" +
+                "Trạng thái: " + statusText + "\n\n" +
+                "Mô tả: " + (deadline.getDescription() == null || deadline.getDescription().isEmpty() ? "(Trống)" : deadline.getDescription());
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(deadline.getTitle())
+                .setMessage(message)
+                .setNegativeButton("Đóng", null);
+
+        if (!"DONE".equals(deadline.getStatus())) {
+            builder.setPositiveButton("Đã hoàn thành", (d, w) -> {
+                deadline.setStatus("DONE");
+                deadlineViewModel.updateDeadline(userId, deadline);
+            });
+        }
+
+        builder.setNeutralButton("Sửa", (d, w) -> {
+            AddEditDeadlineSheet sheet = AddEditDeadlineSheet.newInstance(userId, deadline);
+            sheet.show(getChildFragmentManager(), "edit_deadline_cal");
+        });
+
+        builder.show();
+    }
+
     private void setupCalendar() {
-        // Lắng nghe khi chọn ngày
         binding.calendarView.setOnDateChangeListener(
                 (calView, year, month, dayOfMonth) -> {
-                    // month bắt đầu từ 0 → +1
                     showDeadlinesForDate(year, month + 1, dayOfMonth);
 
                     Calendar cal = Calendar.getInstance();
@@ -79,7 +134,6 @@ public class CalendarFragment extends Fragment {
                     binding.tvSelectedDateLabel.setText(sdf.format(cal.getTime()));
                 });
 
-        // Mặc định hiển thị hôm nay
         Calendar today = Calendar.getInstance();
         showDeadlinesForDate(
                 today.get(Calendar.YEAR),
@@ -92,7 +146,6 @@ public class CalendarFragment extends Fragment {
         deadlineViewModel.deadlines.observe(
                 getViewLifecycleOwner(), deadlines -> {
                     allDeadlines = deadlines;
-                    // Refresh ngày đang hiển thị
                     Calendar today = Calendar.getInstance();
                     showDeadlinesForDate(
                             today.get(Calendar.YEAR),

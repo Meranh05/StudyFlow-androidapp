@@ -14,6 +14,7 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
     private final OnSubjectClickListener listener;
 
     public interface OnSubjectClickListener {
+        void onClick(Subject subject);
         void onEdit(Subject subject);
         void onDelete(Subject subject);
     }
@@ -30,7 +31,10 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
                 return Objects.equals(subjects.get(o).getId(), list.get(n).getId());
             }
             @Override public boolean areContentsTheSame(int o, int n) {
-                return Objects.equals(subjects.get(o).getName(), list.get(n).getName());
+                return Objects.equals(subjects.get(o).getName(), list.get(n).getName()) &&
+                       Objects.equals(subjects.get(o).getLecturer(), list.get(n).getLecturer()) &&
+                       subjects.get(o).getCredits() == list.get(n).getCredits() &&
+                       Objects.equals(subjects.get(o).getColorTag(), list.get(n).getColorTag());
             }
         });
         this.subjects = new ArrayList<>(list);
@@ -70,9 +74,11 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
                 circle.setColor(Color.parseColor(subject.getColorTag()));
                 binding.viewColorTag.setBackground(circle);
             } catch (Exception e) {
-                // fallback color nếu parse lỗi
                 binding.viewColorTag.setBackgroundColor(Color.parseColor("#5E92F3"));
             }
+
+            // Item click
+            binding.getRoot().setOnClickListener(v -> listener.onClick(subject));
 
             // More button popup menu
             binding.btnMore.setOnClickListener(v -> {

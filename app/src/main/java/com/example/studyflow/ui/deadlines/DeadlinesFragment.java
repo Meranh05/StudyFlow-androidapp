@@ -6,12 +6,14 @@ import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.*;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.example.studyflow.data.model.Deadline;
 import com.example.studyflow.databinding.FragmentDeadlinesBinding;
 import com.example.studyflow.notification.DeadlineScheduler;
 import com.example.studyflow.viewmodel.DeadlineViewModel;
 import com.example.studyflow.viewmodel.SubjectViewModel;
+import com.example.studyflow.utils.DateUtils;
 import java.util.*;
 
 public class DeadlinesFragment extends Fragment {
@@ -50,6 +52,11 @@ public class DeadlinesFragment extends Fragment {
     private void setupRecyclerView() {
         adapter = new DeadlineAdapter(new DeadlineAdapter.OnDeadlineClickListener() {
             @Override
+            public void onClick(Deadline deadline) {
+                showDeadlineDetail(deadline);
+            }
+
+            @Override
             public void onEdit(Deadline deadline) {
                 AddEditDeadlineSheet sheet =
                         AddEditDeadlineSheet.newInstance(userId, deadline);
@@ -58,7 +65,7 @@ public class DeadlinesFragment extends Fragment {
 
             @Override
             public void onDelete(Deadline deadline) {
-                new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Xóa deadline?")
                         .setMessage("Xóa \"" + deadline.getTitle() + "\"?")
                         .setPositiveButton("Xóa", (d, w) -> {
@@ -78,6 +85,33 @@ public class DeadlinesFragment extends Fragment {
 
         binding.rvDeadlines.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvDeadlines.setAdapter(adapter);
+    }
+
+    private void showDeadlineDetail(Deadline deadline) {
+        String message = "Môn học: " + deadline.getSubjectName() + "\n" +
+                "Hạn nộp: " + DateUtils.formatDateTime(deadline.getDueDate()) + "\n" +
+                "Độ ưu tiên: " + deadline.getPriority() + "\n" +
+                "Trạng thái: " + deadline.getStatus() + "\n\n" +
+                "Mô tả: " + (deadline.getDescription().isEmpty() ? "(Trống)" : deadline.getDescription());
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(deadline.getTitle())
+                .setMessage(message)
+                .setNegativeButton("Đóng", null);
+
+        if (!"DONE".equals(deadline.getStatus())) {
+            builder.setPositiveButton("Đã hoàn thành", (d, w) -> {
+                deadline.setStatus("DONE");
+                deadlineViewModel.updateDeadline(userId, deadline);
+            });
+        }
+
+        builder.setNeutralButton("Sửa", (d, w) -> {
+            AddEditDeadlineSheet sheet = AddEditDeadlineSheet.newInstance(userId, deadline);
+            sheet.show(getChildFragmentManager(), "edit_deadline");
+        });
+
+        builder.show();
     }
 
     private void setupFilterChips() {

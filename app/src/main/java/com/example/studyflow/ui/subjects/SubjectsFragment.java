@@ -8,6 +8,7 @@ import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.*;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.example.studyflow.data.model.Subject;
 import com.example.studyflow.databinding.FragmentSubjectsBinding;
 import com.example.studyflow.viewmodel.*;
@@ -46,6 +47,11 @@ public class SubjectsFragment extends Fragment {
     private void setupRecyclerView() {
         adapter = new SubjectAdapter(new SubjectAdapter.OnSubjectClickListener() {
             @Override
+            public void onClick(Subject subject) {
+                showSubjectDetail(subject);
+            }
+
+            @Override
             public void onEdit(Subject subject) {
                 AddEditSubjectSheet sheet = AddEditSubjectSheet.newInstance(userId, subject);
                 sheet.show(getChildFragmentManager(), "edit_subject");
@@ -53,7 +59,7 @@ public class SubjectsFragment extends Fragment {
 
             @Override
             public void onDelete(Subject subject) {
-                new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                new MaterialAlertDialogBuilder(requireContext())
                         .setTitle("Xóa môn học?")
                         .setMessage("Xóa \"" + subject.getName() + "\" sẽ không thể hoàn tác.")
                         .setPositiveButton("Xóa", (d, w) ->
@@ -65,6 +71,22 @@ public class SubjectsFragment extends Fragment {
 
         binding.rvSubjects.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvSubjects.setAdapter(adapter);
+    }
+
+    private void showSubjectDetail(Subject subject) {
+        String info = "Giảng viên: " + subject.getLecturer() + "\n" +
+                "Số tín chỉ: " + subject.getCredits() + "\n" +
+                "Mã màu: " + subject.getColorTag();
+
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle(subject.getName())
+                .setMessage(info)
+                .setPositiveButton("Đóng", null)
+                .setNeutralButton("Sửa", (d, w) -> {
+                    AddEditSubjectSheet sheet = AddEditSubjectSheet.newInstance(userId, subject);
+                    sheet.show(getChildFragmentManager(), "edit_subject");
+                })
+                .show();
     }
 
     private void setupSearch() {
