@@ -5,6 +5,7 @@ import androidx.work.Configuration;
 import androidx.work.WorkManager;
 
 import com.google.firebase.FirebaseApp;
+import com.example.studyflow.notification.NotificationHelper;
 
 /**
  * Application class — khởi tạo Firebase và WorkManager
@@ -15,8 +16,7 @@ public class StudyFlowApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Khởi tạo Firebase
         FirebaseApp.initializeApp(this);
-
+        NotificationHelper.ensureChannels(this);
     }
 }

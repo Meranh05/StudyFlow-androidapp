@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="32dp">
+        android:paddingBottom="24dp">
 
         <!-- Header -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,12 +66,12 @@
             android:fontFamily="@font/inter_semi_bold"
             android:textColor="@color/text_primary"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="6dp"/>
 
         <EditText
             android:id="@+id/et_title"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="46dp"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_input_field"
@@ -92,20 +92,21 @@
             android:fontFamily="@font/inter_semi_bold"
             android:textColor="@color/text_primary"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="14dp"/>
 
         <EditText
             android:id="@+id/et_description"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="76dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:background="@drawable/bg_input_field"
             android:hint="Thêm chi tiết về task này..."
             android:textColorHint="@color/text_hint"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:textColor="@color/text_primary"
-            android:padding="16dp"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="10dp"
             android:gravity="top"
             android:inputType="textMultiLine"/>
 
@@ -118,14 +119,14 @@
             android:fontFamily="@font/inter_semi_bold"
             android:textColor="@color/text_primary"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="16dp"/>
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            app:cardCornerRadius="16dp"
+            android:layout_marginTop="6dp"
+            app:cardCornerRadius="14dp"
             app:cardElevation="0dp"
             app:strokeWidth="1dp"
             app:strokeColor="#E8E8E8"
@@ -139,14 +140,14 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/btn_pick_deadline"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:paddingHorizontal="16dp"
+                    android:layout_height="48dp"
+                    android:paddingHorizontal="14dp"
                     android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:id="@+id/icon_deadline"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:background="@drawable/bg_icon_square_orange"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -166,7 +167,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Hạn chót"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginStart="12dp"
                         app:layout_constraintStart_toEndOf="@id/icon_deadline"
@@ -201,19 +202,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#F0F0F0"
-                    android:layout_marginStart="64dp"/>
+                    android:layout_marginStart="56dp"/>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/btn_pick_reminder"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:paddingHorizontal="16dp"
+                    android:layout_height="48dp"
+                    android:paddingHorizontal="14dp"
                     android:background="?attr/selectableItemBackground">
 
                     <FrameLayout
                         android:id="@+id/icon_reminder"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:background="@drawable/bg_icon_square_gray"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -233,7 +234,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nhắc nhở"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:textColor="@color/text_primary"
                         android:layout_marginStart="12dp"
                         app:layout_constraintStart_toEndOf="@id/icon_reminder"
@@ -308,19 +309,19 @@
             android:fontFamily="@font/inter_semi_bold"
             android:textColor="@color/text_primary"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"/>
+            android:layout_marginTop="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="16dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="6dp">
 
             <LinearLayout
                 android:id="@+id/btn_priority_high"
                 android:layout_width="0dp"
-                android:layout_height="72dp"
+                android:layout_height="58dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="6dp"
                 android:orientation="vertical"
@@ -348,7 +349,7 @@
             <LinearLayout
                 android:id="@+id/btn_priority_medium"
                 android:layout_width="0dp"
-                android:layout_height="72dp"
+                android:layout_height="58dp"
                 android:layout_weight="1"
                 android:layout_marginHorizontal="6dp"
                 android:orientation="vertical"
@@ -376,7 +377,7 @@
             <LinearLayout
                 android:id="@+id/btn_priority_low"
                 android:layout_width="0dp"
-                android:layout_height="72dp"
+                android:layout_height="58dp"
                 android:layout_weight="1"
                 android:layout_marginStart="6dp"
                 android:orientation="vertical"
@@ -410,7 +411,7 @@
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:paddingHorizontal="16dp"
-            android:layout_marginTop="24dp">
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:layout_width="0dp"
@@ -446,9 +447,9 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="50dp"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="20dp"
             android:text="Lưu task"
             android:textAllCaps="false"
             android:fontFamily="@font/inter_bold"

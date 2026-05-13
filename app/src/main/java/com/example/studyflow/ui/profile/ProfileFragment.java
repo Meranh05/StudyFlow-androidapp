@@ -17,6 +17,7 @@ import com.example.studyflow.R;
 import com.example.studyflow.data.model.User;
 import com.example.studyflow.data.repository.UserRepository;
 import com.example.studyflow.databinding.FragmentProfileBinding;
+import com.example.studyflow.notification.NotificationPermissionHelper;
 import com.example.studyflow.ui.auth.LoginActivity;
 import com.example.studyflow.utils.AppPreferences;
 import com.example.studyflow.utils.LocalAvatarStorage;
@@ -37,6 +38,19 @@ public class ProfileFragment extends Fragment {
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), this::saveAvatarLocally);
 
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
+                updateNotificationPermissionUi();
+                if (granted) {
+                    enableNotificationsPreference(true);
+                } else if (!shouldShowRequestPermissionRationale(
+                        android.Manifest.permission.POST_NOTIFICATIONS)) {
+                    NotificationPermissionHelper.showOpenSettingsDialog(requireContext());
+                }
+            });
+
+    private boolean pendingEnableNotifications;
+
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +69,13 @@ public class ProfileFragment extends Fragment {
         userId = user.getUid();
         loadUserProfile(user);
         setupClickListeners();
+        updateNotificationPermissionUi();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateNotificationPermissionUi();
     }
 
     private void loadUserProfile(FirebaseUser authUser) {
@@ -129,10 +150,30 @@ public class ProfileFragment extends Fragment {
 
         binding.itemEditProfile.setOnClickListener(v -> openEditProfile());
 
+        binding.itemNotification.setOnClickListener(v -> {
+            if (!NotificationPermissionHelper.canPostNotifications(requireContext())) {
+                pendingEnableNotifications = binding.switchNotifications.isChecked();
+                NotificationPermissionHelper.ensureNotificationAccess(
+                        this, notificationPermissionLauncher);
+            }
+        });
+
         binding.switchNotifications.setOnCheckedChangeListener((btn, isChecked) -> {
             if (suppressNotifListener) return;
-            AppPreferences.setNotificationsEnabled(requireContext(), isChecked);
-            userRepo.updateNotificationsEnabled(userId, isChecked);
+            if (isChecked) {
+                if (!NotificationPermissionHelper.canPostNotifications(requireContext())) {
+                    suppressNotifListener = true;
+                    binding.switchNotifications.setChecked(false);
+                    suppressNotifListener = false;
+                    pendingEnableNotifications = true;
+                    NotificationPermissionHelper.ensureNotificationAccess(
+                            this, notificationPermissionLauncher);
+                    return;
+                }
+                enableNotificationsPreference(true);
+            } else {
+                enableNotificationsPreference(false);
+            }
         });
 
         binding.itemDefaultReminder.setOnClickListener(v -> showDefaultReminderPicker());
@@ -149,6 +190,25 @@ public class ProfileFragment extends Fragment {
                         .setNegativeButton("Hủy", null)
                         .show()
         );
+    }
+
+    private void enableNotificationsPreference(boolean enabled) {
+        AppPreferences.setNotificationsEnabled(requireContext(), enabled);
+        userRepo.updateNotificationsEnabled(userId, enabled);
+        suppressNotifListener = true;
+        binding.switchNotifications.setChecked(enabled);
+        suppressNotifListener = false;
+    }
+
+    private void updateNotificationPermissionUi() {
+        boolean granted = NotificationPermissionHelper.canPostNotifications(requireContext());
+        binding.tvNotifStatus.setVisibility(
+                NotificationPermissionHelper.needsRuntimePermission() && !granted
+                        ? View.VISIBLE : View.GONE);
+        if (pendingEnableNotifications && granted) {
+            pendingEnableNotifications = false;
+            enableNotificationsPreference(true);
+        }
     }
 
     private void pickImage() {

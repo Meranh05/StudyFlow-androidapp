@@ -1,38 +1,29 @@
 package com.example.studyflow.notification;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.example.studyflow.R;
 import com.example.studyflow.ui.main.MainActivity;
 
-/**
- * Nhận push notification từ Firebase Cloud Messaging.
- * Server gửi notification khi deadline gần tới.
- */
 public class StudyFlowMessagingService extends FirebaseMessagingService {
-
-    private static final String CHANNEL_ID = "fcm_deadlines";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        // Lấy data từ FCM message
-        String title = "StudyFlow";
-        String body  = "Bạn có deadline sắp tới!";
+        String title = getString(R.string.app_name);
+        String body = getString(R.string.notif_due_body);
 
         if (remoteMessage.getNotification() != null) {
             title = remoteMessage.getNotification().getTitle();
-            body  = remoteMessage.getNotification().getBody();
+            body = remoteMessage.getNotification().getBody();
         } else if (!remoteMessage.getData().isEmpty()) {
-            // Nếu dùng data payload thay notification payload
             title = remoteMessage.getData().getOrDefault("title", title);
-            body  = remoteMessage.getData().getOrDefault("body", body);
+            body = remoteMessage.getData().getOrDefault("body", body);
         }
 
         showNotification(title, body);
@@ -41,8 +32,6 @@ public class StudyFlowMessagingService extends FirebaseMessagingService {
     @Override
     public void onNewToken(String token) {
         super.onNewToken(token);
-        // Lưu FCM token vào Firestore để server có thể gửi
-        // notification trực tiếp tới user
         saveTokenToFirestore(token);
     }
 
@@ -58,39 +47,29 @@ public class StudyFlowMessagingService extends FirebaseMessagingService {
     }
 
     private void showNotification(String title, String body) {
-        createChannel();
+        if (!NotificationPermissionHelper.canPostNotifications(this)) return;
 
-        // Nhấn notification → mở MainActivity
+        NotificationHelper.ensureChannels(this);
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_notification)
-                        .setContentTitle(title)
-                        .setContentText(body)
-                        .setAutoCancel(true)
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setContentIntent(pendingIntent);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                this, NotificationHelper.CHANNEL_DEADLINES)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setColor(getColor(R.color.primary))
+                .setContentTitle(title)
+                .setContentText(body)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(body))
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_REMINDER)
+                .setContentIntent(pendingIntent);
 
-        NotificationManager manager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (manager != null) {
-            manager.notify((int) System.currentTimeMillis(), builder.build());
-        }
-    }
-
-    private void createChannel() {
-        NotificationChannel channel = new NotificationChannel(
-                CHANNEL_ID,
-                "Nhắc nhở deadline",
-                NotificationManager.IMPORTANCE_HIGH);
-        channel.setDescription("Thông báo từ server khi deadline gần tới");
-        NotificationManager manager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (manager != null) manager.createNotificationChannel(channel);
+        NotificationManagerCompat.from(this)
+                .notify((int) System.currentTimeMillis(), builder.build());
     }
 }

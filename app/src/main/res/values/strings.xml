@@ -78,4 +78,39 @@
     <string name="app_subtitle">Quản lý học tập hiệu quả</string>
     <string name="divider_text">  hoặc  </string>
     <string name="register_link">Đăng ký ngay</string>
+
+    <!-- Notifications -->
+    <string name="notif_channel_deadlines">Nhắc deadline StudyFlow</string>
+    <string name="notif_channel_deadlines_desc">Thông báo trước hạn và đúng giờ deadline</string>
+    <string name="notif_permission_title">Bật thông báo</string>
+    <string name="notif_permission_message">StudyFlow cần quyền thông báo để nhắc bạn trước hạn và đúng giờ deadline.</string>
+    <string name="notif_permission_message_legacy">Trên Android 12, hệ thống không hiện hộp thoại quyền riêng. Nhấn Cho phép để mở cài đặt thông báo StudyFlow và bật nhắc deadline.</string>
+    <string name="notif_permission_allow">Cho phép</string>
+    <string name="notif_permission_later">Để sau</string>
+    <string name="notif_permission_required">Chưa cấp quyền thông báo — nhấn để bật</string>
+    <string name="notif_permission_settings_message">Quyền thông báo đang tắt. Mở Cài đặt để bật và nhận nhắc deadline.</string>
+    <string name="notif_open_settings">Mở cài đặt</string>
+    <string name="notif_permission_denied_snack">Cần quyền thông báo để nhận nhắc deadline</string>
+    <string name="notif_before_title">Sắp đến hạn — %1$s</string>
+    <string name="notif_due_title">Đến hạn ngay — %1$s</string>
+    <string name="notif_badge_due">Đúng giờ</string>
+    <string name="notif_badge_before">Nhắc trước</string>
+    <string name="notif_before_short">Nhắc trước: %1$s</string>
+    <string name="notif_due_short">Hạn: %1$s</string>
+    <string name="notif_before_body">Còn %1$s nữa là đến hạn. Chuẩn bị hoàn thành nhé!</string>
+    <string name="notif_due_body">Đã đến giờ hạn. Mở StudyFlow để cập nhật tiến độ.</string>
+    <string name="notif_due_at">%1$s</string>
+    <string name="notif_subject_line">%1$s</string>
+    <string name="notif_no_subject">Chung</string>
+    <string name="notif_subtext_before">Nhắc trước hạn</string>
+    <string name="notif_subtext_due">Đúng giờ hạn</string>
+    <string name="notif_priority_high">Cao</string>
+    <string name="notif_priority_medium">Trung bình</string>
+    <string name="notif_priority_low">Thấp</string>
+    <string name="notif_priority_compact_high">Ưu tiên cao</string>
+    <string name="notif_priority_compact_medium">Ưu tiên trung bình</string>
+    <string name="notif_priority_compact_low">Ưu tiên thấp</string>
+    <string name="notif_status_due">Đến hạn</string>
+    <string name="notif_status_before">Nhắc trước</string>
+    <string name="notif_action_open">Mở</string>
 </resources>

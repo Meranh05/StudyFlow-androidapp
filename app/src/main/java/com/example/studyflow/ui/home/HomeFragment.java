@@ -2,6 +2,8 @@ package com.example.studyflow.ui.home;
 
 import android.os.Bundle;
 import android.view.*;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +17,8 @@ import com.google.firebase.auth.*;
 import com.example.studyflow.R;
 import com.example.studyflow.data.model.Deadline;
 import com.example.studyflow.databinding.FragmentHomeBinding;
+import com.example.studyflow.notification.DeadlineScheduler;
+import com.example.studyflow.notification.NotificationPermissionHelper;
 import com.example.studyflow.ui.deadlines.*;
 import com.example.studyflow.utils.DateUtils;
 import com.example.studyflow.utils.LocalAvatarStorage;
@@ -28,6 +32,10 @@ public class HomeFragment extends Fragment {
     private SubjectViewModel subjectViewModel;
     private DeadlineAdapter adapter;
     private String userId;
+
+    private final ActivityResultLauncher<String> notificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted ->
+                    updateNotificationPermissionBanner());
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,10 +58,36 @@ public class HomeFragment extends Fragment {
         setupHeader(user);
         setupRecyclerView();
         setupQuickActions();
+        setupNotificationPermissionBanner();
         setupObservers();
 
         deadlineViewModel.startListening(userId);
         subjectViewModel.startListening(userId);
+        updateNotificationPermissionBanner();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateNotificationPermissionBanner();
+        if (userId == null || binding == null) return;
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) loadHeaderAvatar(user);
+    }
+
+    private void setupNotificationPermissionBanner() {
+        binding.btnGrantNotif.setOnClickListener(v ->
+                NotificationPermissionHelper.ensureNotificationAccess(
+                        this, notificationPermissionLauncher));
+        binding.cardNotifPermission.setOnClickListener(v ->
+                NotificationPermissionHelper.ensureNotificationAccess(
+                        this, notificationPermissionLauncher));
+    }
+
+    private void updateNotificationPermissionBanner() {
+        if (binding == null) return;
+        boolean show = !NotificationPermissionHelper.canPostNotifications(requireContext());
+        binding.cardNotifPermission.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void setupHeader(FirebaseUser user) {
@@ -78,14 +112,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (userId == null || binding == null) return;
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) loadHeaderAvatar(user);
-    }
-
     private void setupRecyclerView() {
         adapter = new DeadlineAdapter(new DeadlineAdapter.OnDeadlineClickListener() {
             @Override
@@ -97,6 +123,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onStatusChange(Deadline d, String status) {
                 d.setStatus(status);
+                if ("DONE".equals(status)) {
+                    DeadlineScheduler.cancelReminder(
+                            requireContext().getApplicationContext(), d.getId());
+                }
                 deadlineViewModel.updateDeadline(userId, d);
             }
 
@@ -141,6 +171,9 @@ public class HomeFragment extends Fragment {
         deadlineViewModel.deadlines.observe(getViewLifecycleOwner(), deadlines -> {
             if (deadlines == null) return;
             binding.progressBar.setVisibility(View.GONE);
+
+            DeadlineScheduler.rescheduleAll(
+                    requireContext().getApplicationContext(), deadlines);
 
             long now = System.currentTimeMillis();
             int upcoming = 0;

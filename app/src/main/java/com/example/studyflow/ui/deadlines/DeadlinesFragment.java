@@ -66,6 +66,10 @@ public class DeadlinesFragment extends Fragment {
             public void onStatusChange(Deadline deadline, String newStatus) {
                 deadline.setStatus(newStatus);
                 deadline.setUpdatedAt(Timestamp.now());
+                if ("DONE".equals(newStatus)) {
+                    DeadlineScheduler.cancelReminder(
+                            requireContext().getApplicationContext(), deadline.getId());
+                }
                 deadlineViewModel.updateDeadline(userId, deadline);
             }
 
