@@ -15,6 +15,7 @@ import com.example.studyflow.data.model.*;
 import com.example.studyflow.data.repository.UserRepository;
 import com.example.studyflow.databinding.SheetAddDeadlineBinding;
 import com.example.studyflow.notification.DeadlineScheduler;
+import com.example.studyflow.ui.common.BottomSheetHelper;
 import com.example.studyflow.utils.DateUtils;
 import com.example.studyflow.utils.ReminderUtils;
 import com.example.studyflow.viewmodel.*;
@@ -83,6 +84,14 @@ public class AddEditDeadlineSheet extends BottomSheetDialogFragment {
 
         binding.tvReminderValue.setText(ReminderUtils.getLabel(reminderMinutes));
         subjectViewModel.startListening(userId);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (binding != null) {
+            BottomSheetHelper.fitToContent(this, binding.getRoot());
+        }
     }
 
     private void loadDefaultReminder() {

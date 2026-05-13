@@ -9,6 +9,7 @@ import com.google.android.material.chip.Chip;
 import com.example.studyflow.R;
 import com.example.studyflow.databinding.SheetDatetimePickerBinding;
 import com.example.studyflow.ui.calendar.CalendarDayAdapter;
+import com.example.studyflow.ui.common.BottomSheetHelper;
 import com.example.studyflow.utils.DateUtils;
 import com.example.studyflow.utils.ReminderUtils;
 import java.text.SimpleDateFormat;
@@ -83,6 +84,14 @@ public class DateTimePickerSheet extends BottomSheetDialogFragment {
         });
         binding.rowTime.setOnClickListener(v -> openTimePicker());
         binding.rowReminder.setOnClickListener(v -> showReminderPicker());
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (binding != null) {
+            BottomSheetHelper.fitToContent(this, binding.getRoot());
+        }
     }
 
     private void setupCalendar() {
