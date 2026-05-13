@@ -5,15 +5,16 @@ import android.view.*;
 import androidx.annotation.*;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.example.studyflow.R;
 import com.example.studyflow.data.model.Deadline;
 import com.example.studyflow.databinding.FragmentCalendarBinding;
-import com.example.studyflow.ui.deadlines.DeadlineAdapter;
 import com.example.studyflow.ui.deadlines.AddEditDeadlineSheet;
-import com.example.studyflow.viewmodel.DeadlineViewModel;
 import com.example.studyflow.utils.DateUtils;
+import com.example.studyflow.viewmodel.DeadlineViewModel;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -21,9 +22,13 @@ public class CalendarFragment extends Fragment {
 
     private FragmentCalendarBinding binding;
     private DeadlineViewModel deadlineViewModel;
-    private DeadlineAdapter adapter;
+    private CalendarDayAdapter dayAdapter;
+    private CalendarTaskAdapter taskAdapter;
     private List<Deadline> allDeadlines = new ArrayList<>();
     private String userId;
+
+    private final Calendar displayMonth = Calendar.getInstance();
+    private final Calendar selectedDay = Calendar.getInstance();
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,141 +43,130 @@ public class CalendarFragment extends Fragment {
                               @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) return;
+        userId = user.getUid();
+
         deadlineViewModel = new ViewModelProvider(requireActivity())
                 .get(DeadlineViewModel.class);
 
-        setupRecyclerView();
         setupCalendar();
+        setupTaskList();
         setupObservers();
 
         deadlineViewModel.startListening(userId);
-    }
-
-
-    private void setupRecyclerView() {
-        adapter = new DeadlineAdapter(
-                new DeadlineAdapter.OnDeadlineClickListener() {
-                    @Override
-                    public void onClick(Deadline d) {
-                        showDeadlineDetail(d);
-                    }
-
-                    @Override
-                    public void onEdit(Deadline d) {
-                        AddEditDeadlineSheet sheet = AddEditDeadlineSheet.newInstance(userId, d);
-                        sheet.show(getChildFragmentManager(), "edit_deadline_cal");
-                    }
-
-                    @Override
-                    public void onDelete(Deadline d) {
-                        new MaterialAlertDialogBuilder(requireContext())
-                                .setTitle("Xóa deadline?")
-                                .setMessage("Xóa \"" + d.getTitle() + "\"?")
-                                .setPositiveButton("Xóa", (dialog, which) -> {
-                                    deadlineViewModel.deleteDeadline(userId, d.getId());
-                                })
-                                .setNegativeButton("Hủy", null)
-                                .show();
-                    }
-
-                    @Override
-                    public void onStatusChange(Deadline d, String status) {
-                        d.setStatus(status);
-                        deadlineViewModel.updateDeadline(userId, d);
-                    }
-                });
-        binding.rvDayDeadlines.setLayoutManager(
-                new LinearLayoutManager(requireContext()));
-        binding.rvDayDeadlines.setAdapter(adapter);
-    }
-
-    private void showDeadlineDetail(Deadline deadline) {
-        String statusText;
-        switch (deadline.getStatus()) {
-            case "DONE": statusText = "Hoàn thành"; break;
-            case "IN_PROGRESS": statusText = "Đang làm"; break;
-            default: statusText = "Chưa làm"; break;
-        }
-
-        String message = "Môn học: " + deadline.getSubjectName() + "\n" +
-                "Hạn nộp: " + DateUtils.formatDateTime(deadline.getDueDate()) + "\n" +
-                "Độ ưu tiên: " + deadline.getPriority() + "\n" +
-                "Trạng thái: " + statusText + "\n\n" +
-                "Mô tả: " + (deadline.getDescription() == null || deadline.getDescription().isEmpty() ? "(Trống)" : deadline.getDescription());
-
-        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(deadline.getTitle())
-                .setMessage(message)
-                .setNegativeButton("Đóng", null);
-
-        if (!"DONE".equals(deadline.getStatus())) {
-            builder.setPositiveButton("Đã hoàn thành", (d, w) -> {
-                deadline.setStatus("DONE");
-                deadlineViewModel.updateDeadline(userId, deadline);
-            });
-        }
-
-        builder.setNeutralButton("Sửa", (d, w) -> {
-            AddEditDeadlineSheet sheet = AddEditDeadlineSheet.newInstance(userId, deadline);
-            sheet.show(getChildFragmentManager(), "edit_deadline_cal");
-        });
-
-        builder.show();
+        refreshCalendar();
+        refreshTaskList();
     }
 
     private void setupCalendar() {
-        binding.calendarView.setOnDateChangeListener(
-                (calView, year, month, dayOfMonth) -> {
-                    showDeadlinesForDate(year, month + 1, dayOfMonth);
+        dayAdapter = new CalendarDayAdapter((year, month, day) -> {
+            selectedDay.set(year, month - 1, day);
+            refreshCalendar();
+            refreshTaskList();
+        });
+        binding.rvCalendarDays.setLayoutManager(new GridLayoutManager(requireContext(), 7));
+        binding.rvCalendarDays.setAdapter(dayAdapter);
 
-                    Calendar cal = Calendar.getInstance();
-                    cal.set(year, month, dayOfMonth);
-                    SimpleDateFormat sdf =
-                            new SimpleDateFormat("EEEE, dd/MM/yyyy",
-                                    new Locale("vi"));
-                    binding.tvSelectedDateLabel.setText(sdf.format(cal.getTime()));
-                });
+        binding.btnPrevMonth.setOnClickListener(v -> {
+            displayMonth.add(Calendar.MONTH, -1);
+            refreshCalendar();
+        });
+        binding.btnNextMonth.setOnClickListener(v -> {
+            displayMonth.add(Calendar.MONTH, 1);
+            refreshCalendar();
+        });
+    }
 
-        Calendar today = Calendar.getInstance();
-        showDeadlinesForDate(
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH) + 1,
-                today.get(Calendar.DAY_OF_MONTH)
-        );
+    private void setupTaskList() {
+        taskAdapter = new CalendarTaskAdapter(deadline ->
+                com.example.studyflow.ui.deadlines.DeadlineDetailSheet.newInstance(userId, deadline)
+                        .show(getChildFragmentManager(), "detail_deadline_cal"));
+        binding.rvDayDeadlines.setLayoutManager(new LinearLayoutManager(requireContext()));
+        binding.rvDayDeadlines.setAdapter(taskAdapter);
     }
 
     private void setupObservers() {
-        deadlineViewModel.deadlines.observe(
-                getViewLifecycleOwner(), deadlines -> {
-                    allDeadlines = deadlines;
-                    Calendar today = Calendar.getInstance();
-                    showDeadlinesForDate(
-                            today.get(Calendar.YEAR),
-                            today.get(Calendar.MONTH) + 1,
-                            today.get(Calendar.DAY_OF_MONTH)
-                    );
-                });
+        deadlineViewModel.deadlines.observe(getViewLifecycleOwner(), deadlines -> {
+            allDeadlines = deadlines != null ? deadlines : new ArrayList<>();
+            refreshCalendar();
+            refreshTaskList();
+        });
     }
 
-    private void showDeadlinesForDate(int year, int month, int day) {
-        List<Deadline> filtered = new ArrayList<>();
+    private void refreshCalendar() {
+        int year = displayMonth.get(Calendar.YEAR);
+        int month = displayMonth.get(Calendar.MONTH);
+
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM yyyy", new Locale("vi"));
+        String label = monthFormat.format(displayMonth.getTime());
+        label = label.substring(0, 1).toUpperCase() + label.substring(1);
+        binding.tvMonthYear.setText(label);
+
+        Calendar first = Calendar.getInstance();
+        first.set(year, month, 1);
+        int startDayOfWeek = first.get(Calendar.DAY_OF_WEEK) - 1;
+        int daysInMonth = first.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        Set<Integer> daysWithTasks = new HashSet<>();
         for (Deadline d : allDeadlines) {
             if (d.getDueDate() == null) continue;
             Calendar dCal = Calendar.getInstance();
             dCal.setTime(d.getDueDate().toDate());
-            if (dCal.get(Calendar.YEAR)         == year  &&
-                    dCal.get(Calendar.MONTH) + 1    == month &&
-                    dCal.get(Calendar.DAY_OF_MONTH) == day) {
-                filtered.add(d);
+            if (dCal.get(Calendar.YEAR) == year && dCal.get(Calendar.MONTH) == month) {
+                daysWithTasks.add(dCal.get(Calendar.DAY_OF_MONTH));
             }
         }
-        adapter.submitList(filtered);
-        boolean empty = filtered.isEmpty();
-        binding.layoutEmptyDay.setVisibility(
-                empty ? View.VISIBLE : View.GONE);
-        binding.rvDayDeadlines.setVisibility(
-                empty ? View.GONE : View.VISIBLE);
+
+        List<CalendarDayAdapter.DayItem> days = new ArrayList<>();
+        for (int i = 0; i < startDayOfWeek; i++) {
+            days.add(new CalendarDayAdapter.DayItem(0, false, false, false));
+        }
+        for (int d = 1; d <= daysInMonth; d++) {
+            boolean selected = selectedDay.get(Calendar.YEAR) == year
+                    && selectedDay.get(Calendar.MONTH) == month
+                    && selectedDay.get(Calendar.DAY_OF_MONTH) == d;
+            days.add(new CalendarDayAdapter.DayItem(d, true, selected, daysWithTasks.contains(d)));
+        }
+        while (days.size() % 7 != 0) {
+            days.add(new CalendarDayAdapter.DayItem(0, false, false, false));
+        }
+
+        dayAdapter.setMonth(year, month + 1, days);
+    }
+
+    private void refreshTaskList() {
+        Calendar today = Calendar.getInstance();
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DAY_OF_YEAR, -1);
+
+        List<CalendarTaskAdapter.TaskListItem> items = new ArrayList<>();
+        appendTasksForDay(items, today);
+        appendTasksForDay(items, yesterday);
+
+        boolean empty = items.isEmpty();
+        binding.layoutEmptyDay.setVisibility(empty ? View.VISIBLE : View.GONE);
+        binding.rvDayDeadlines.setVisibility(empty ? View.GONE : View.VISIBLE);
+        taskAdapter.submitList(items);
+    }
+
+    private void appendTasksForDay(List<CalendarTaskAdapter.TaskListItem> items, Calendar day) {
+        List<Deadline> dayTasks = new ArrayList<>();
+        for (Deadline d : allDeadlines) {
+            if (d.getDueDate() == null) continue;
+            Calendar dCal = Calendar.getInstance();
+            dCal.setTime(d.getDueDate().toDate());
+            if (DateUtils.isSameDay(day, dCal)) {
+                dayTasks.add(d);
+            }
+        }
+        if (dayTasks.isEmpty()) return;
+
+        Collections.sort(dayTasks, (a, b) -> a.getDueDate().compareTo(b.getDueDate()));
+        items.add(new CalendarTaskAdapter.TaskListItem(DateUtils.formatGroupHeader(day)));
+        for (Deadline d : dayTasks) {
+            items.add(new CalendarTaskAdapter.TaskListItem(d));
+        }
     }
 
     @Override

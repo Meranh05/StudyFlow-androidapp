@@ -12,6 +12,8 @@ public class Deadline {
     private String priority;   // LOW / MEDIUM / HIGH
     private String status;     // TODO / IN_PROGRESS / DONE
     private boolean notified;
+    private int reminderMinutes;
+    private String flagColor;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
@@ -28,6 +30,7 @@ public class Deadline {
         this.priority = priority;
         this.status = status;
         this.notified = false;
+        this.reminderMinutes = 60;
         this.createdAt = Timestamp.now();
         this.updatedAt = Timestamp.now();
     }
@@ -50,6 +53,10 @@ public class Deadline {
     public void setStatus(String status) { this.status = status; }
     public boolean isNotified() { return notified; }
     public void setNotified(boolean notified) { this.notified = notified; }
+    public int getReminderMinutes() { return reminderMinutes; }
+    public void setReminderMinutes(int reminderMinutes) { this.reminderMinutes = reminderMinutes; }
+    public String getFlagColor() { return flagColor; }
+    public void setFlagColor(String flagColor) { this.flagColor = flagColor; }
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp t) { this.createdAt = t; }
     public Timestamp getUpdatedAt() { return updatedAt; }

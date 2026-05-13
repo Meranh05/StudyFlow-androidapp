@@ -4,213 +4,315 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
-        app:elevation="0dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
-
-            <TextView
-                android:id="@+id/tv_greeting"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="22sp"
-                android:textColor="@color/text_primary"
-                android:fontFamily="@font/inter_semi_bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/iv_avatar"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <TextView
-                android:id="@+id/tv_date"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@color/text_secondary"
-                android:layout_marginTop="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_greeting"/>
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_avatar"
-                android:layout_width="44dp"
-                android:layout_height="44dp"
-                android:src="@drawable/ic_default_avatar"
-                app:civ_border_color="@color/primary_light"
-                app:civ_border_width="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.google.android.material.appbar.AppBarLayout>
+    android:background="@color/surface">
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:clipToPadding="false"
+        android:paddingBottom="80dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp"
-            android:paddingTop="8dp">
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp">
 
-            <!-- Stats mini cards -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:id="@+id/tv_greeting"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="22sp"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="@font/inter_semi_bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/iv_avatar"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:layout_marginTop="2dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/iv_avatar"
+                    app:layout_constraintTop_toBottomOf="@id/tv_greeting"/>
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:src="@drawable/ic_default_avatar"
+                    app:civ_border_color="@color/divider"
+                    app:civ_border_width="1dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Stats -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="20dp">
 
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/divider"
-                    app:cardBackgroundColor="@color/surface">
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/bg_stats_orange"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="6dp"
+                    android:elevation="1dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:text="MÔN HỌC"
+                        android:textSize="10sp"
+                        android:textColor="@color/primary"
+                        android:letterSpacing="0.04"
+                        android:fontFamily="@font/inter_semi_bold"/>
 
-                        <TextView
-                            android:id="@+id/tv_total_subjects"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textSize="28sp"
-                            android:fontFamily="@font/inter_bold"
-                            android:textColor="@color/primary"/>
+                    <TextView
+                        android:id="@+id/tv_total_subjects"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="26sp"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginTop="2dp"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Môn học"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_secondary"/>
+                </LinearLayout>
 
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
-
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    app:cardCornerRadius="16dp"
-                    app:cardElevation="0dp"
-                    app:strokeWidth="1dp"
-                    app:strokeColor="@color/divider"
-                    app:cardBackgroundColor="@color/surface">
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@drawable/bg_stats_gray"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="6dp"
+                    android:elevation="1dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="16dp">
+                        android:text="SẮP TỚI"
+                        android:textSize="10sp"
+                        android:textColor="@color/text_secondary"
+                        android:letterSpacing="0.04"
+                        android:fontFamily="@font/inter_semi_bold"/>
 
-                        <TextView
-                            android:id="@+id/tv_pending_deadlines"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textSize="28sp"
-                            android:fontFamily="@font/inter_bold"
-                            android:textColor="@color/priority_high_text"/>
+                    <TextView
+                        android:id="@+id/tv_upcoming_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="26sp"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginTop="2dp"/>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Deadline còn lại"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_secondary"/>
+                </LinearLayout>
 
-                    </LinearLayout>
-                </com.google.android.material.card.MaterialCardView>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="5dp"
+                    android:background="@drawable/bg_stats_red"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="6dp"
+                    android:elevation="1dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="QUÁ HẠN"
+                        android:textSize="10sp"
+                        android:textColor="@color/priority_high_text"
+                        android:letterSpacing="0.04"
+                        android:fontFamily="@font/inter_semi_bold"/>
+
+                    <TextView
+                        android:id="@+id/tv_overdue_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="26sp"
+                        android:fontFamily="@font/inter_bold"
+                        android:textColor="@color/priority_high_text"
+                        android:layout_marginTop="2dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Section: Quick Actions -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Thao tác nhanh"
-                android:textSize="16sp"
+                android:text="Truy cập nhanh"
+                android:textSize="15sp"
                 android:fontFamily="@font/inter_semi_bold"
                 android:textColor="@color/text_primary"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="10dp"/>
 
+            <!-- Quick access - compact -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="20dp">
 
-                <com.google.android.material.button.MaterialButton
+                <LinearLayout
                     android:id="@+id/btn_add_task"
                     android:layout_width="0dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginEnd="6dp"
-                    android:text="+ Task"
-                    android:textSize="13sp"
-                    style="@style/Widget.Material3.Button.TonalButton"
-                    app:cornerRadius="12dp"/>
+                    android:background="@drawable/bg_card_border"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
-                <com.google.android.material.button.MaterialButton
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_circle_orange">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_add_task"
+                            android:contentDescription="@null"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tạo mới"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/inter_medium"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginTop="6dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/btn_add_subject"
                     android:layout_width="0dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:text="+ Môn học"
-                    android:textSize="13sp"
-                    style="@style/Widget.Material3.Button.TonalButton"
-                    app:cornerRadius="12dp"/>
+                    android:layout_marginHorizontal="3dp"
+                    android:background="@drawable/bg_card_border"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
 
-                <com.google.android.material.button.MaterialButton
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_circle_yellow">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_book"
+                            android:contentDescription="@null"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Môn học"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/inter_medium"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginTop="6dp"/>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/btn_add_schedule"
                     android:layout_width="0dp"
-                    android:layout_height="44dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginStart="6dp"
-                    android:text="+ Lịch"
-                    android:textSize="13sp"
-                    style="@style/Widget.Material3.Button.TonalButton"
-                    app:cornerRadius="12dp"/>
+                    android:background="@drawable/bg_card_border"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingVertical="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground">
+
+                    <FrameLayout
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_icon_circle_orange">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_date"
+                            android:contentDescription="@null"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Lịch"
+                        android:textSize="11sp"
+                        android:fontFamily="@font/inter_medium"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginTop="6dp"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Section: Upcoming Deadlines -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Deadline sắp tới"
-                    android:textSize="16sp"
+                    android:text="Deadlines sắp tới"
+                    android:textSize="15sp"
                     android:fontFamily="@font/inter_semi_bold"
                     android:textColor="@color/text_primary"/>
 
@@ -219,12 +321,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Xem tất cả"
-                    android:textSize="13sp"
-                    android:textColor="@color/primary"/>
+                    android:textSize="12sp"
+                    android:textColor="@color/primary"
+                    android:fontFamily="@font/inter_medium"
+                    android:padding="4dp"/>
 
             </LinearLayout>
 
-            <!-- Loading state -->
             <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
@@ -232,33 +335,17 @@
                 android:layout_gravity="center"
                 android:visibility="gone"/>
 
-            <!-- Empty state -->
-            <LinearLayout
+            <TextView
                 android:id="@+id/layout_empty"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:orientation="vertical"
+                android:layout_height="wrap_content"
+                android:text="@string/no_upcoming_deadlines"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
                 android:gravity="center"
-                android:visibility="gone">
+                android:padding="40dp"
+                android:visibility="gone"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🎉"
-                    android:textSize="48sp"
-                    android:layout_marginBottom="12dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_tasks_today"
-                    android:textSize="15sp"
-                    android:textColor="@color/text_secondary"
-                    android:gravity="center"/>
-
-            </LinearLayout>
-
-            <!-- RecyclerView deadlines -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_upcoming_deadlines"
                 android:layout_width="match_parent"
@@ -269,17 +356,16 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <!-- FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="24dp"
+        android:layout_margin="20dp"
         android:src="@drawable/ic_add_vector"
         app:tint="@color/white"
         app:backgroundTint="@color/primary"
-        app:fabCustomSize="56dp"
+        app:fabCustomSize="52dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearance.StudyFlow.FAB"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

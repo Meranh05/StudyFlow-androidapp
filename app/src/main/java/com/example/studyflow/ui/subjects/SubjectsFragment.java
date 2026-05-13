@@ -48,7 +48,8 @@ public class SubjectsFragment extends Fragment {
         adapter = new SubjectAdapter(new SubjectAdapter.OnSubjectClickListener() {
             @Override
             public void onClick(Subject subject) {
-                showSubjectDetail(subject);
+                SubjectDetailSheet.newInstance(userId, subject)
+                        .show(getChildFragmentManager(), "subject_detail");
             }
 
             @Override
@@ -59,32 +60,45 @@ public class SubjectsFragment extends Fragment {
 
             @Override
             public void onDelete(Subject subject) {
-                new MaterialAlertDialogBuilder(requireContext())
-                        .setTitle("Xóa môn học?")
-                        .setMessage("Xóa \"" + subject.getName() + "\" sẽ không thể hoàn tác.")
-                        .setPositiveButton("Xóa", (d, w) ->
-                                subjectViewModel.deleteSubject(userId, subject.getId()))
-                        .setNegativeButton("Hủy", null)
-                        .show();
+                confirmDeleteSubject(subject, null);
             }
         });
 
         binding.rvSubjects.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvSubjects.setAdapter(adapter);
+
+        ItemTouchHelper.SimpleCallback swipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView rv, @NonNull RecyclerView.ViewHolder from,
+                                  @NonNull RecyclerView.ViewHolder to) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder holder, int direction) {
+                int position = holder.getBindingAdapterPosition();
+                Subject subject = adapter.getSubjectAt(position);
+                if (subject == null) {
+                    adapter.notifyItemChanged(position);
+                    return;
+                }
+                confirmDeleteSubject(subject, () -> adapter.notifyItemChanged(position));
+            }
+        };
+        new ItemTouchHelper(swipeCallback).attachToRecyclerView(binding.rvSubjects);
     }
 
-    private void showSubjectDetail(Subject subject) {
-        String info = "Giảng viên: " + subject.getLecturer() + "\n" +
-                "Số tín chỉ: " + subject.getCredits() + "\n" +
-                "Mã màu: " + subject.getColorTag();
-
+    private void confirmDeleteSubject(Subject subject, @Nullable Runnable onCancel) {
         new MaterialAlertDialogBuilder(requireContext())
-                .setTitle(subject.getName())
-                .setMessage(info)
-                .setPositiveButton("Đóng", null)
-                .setNeutralButton("Sửa", (d, w) -> {
-                    AddEditSubjectSheet sheet = AddEditSubjectSheet.newInstance(userId, subject);
-                    sheet.show(getChildFragmentManager(), "edit_subject");
+                .setTitle("Xóa môn học?")
+                .setMessage("Xóa \"" + subject.getName() + "\" sẽ không thể hoàn tác.")
+                .setPositiveButton("Xóa", (d, w) ->
+                        subjectViewModel.deleteSubject(userId, subject.getId()))
+                .setNegativeButton("Hủy", (d, w) -> {
+                    if (onCancel != null) onCancel.run();
+                })
+                .setOnCancelListener(d -> {
+                    if (onCancel != null) onCancel.run();
                 })
                 .show();
     }
@@ -103,31 +117,46 @@ public class SubjectsFragment extends Fragment {
     private void filterSubjects(String query) {
         if (query.isEmpty()) {
             adapter.submitList(new ArrayList<>(allSubjects));
+            updateSummary(allSubjects);
+            updateEmptyState(false, allSubjects.isEmpty());
             return;
         }
         List<Subject> filtered = new ArrayList<>();
+        String q = query.toLowerCase(Locale.ROOT);
         for (Subject s : allSubjects) {
-            if (s.getName().toLowerCase().contains(query.toLowerCase()) ||
-                    s.getLecturer().toLowerCase().contains(query.toLowerCase())) {
+            String name = s.getName() != null ? s.getName().toLowerCase(Locale.ROOT) : "";
+            String lecturer = s.getLecturer() != null ? s.getLecturer().toLowerCase(Locale.ROOT) : "";
+            if (name.contains(q) || lecturer.contains(q)) {
                 filtered.add(s);
             }
         }
         adapter.submitList(filtered);
-        updateEmptyState(filtered.isEmpty());
+        updateSummary(filtered);
+        updateEmptyState(true, filtered.isEmpty());
     }
 
     private void setupObservers() {
         subjectViewModel.subjects.observe(getViewLifecycleOwner(), subjects -> {
             binding.progressBar.setVisibility(View.GONE);
-            allSubjects = subjects;
+            allSubjects = subjects != null ? subjects : new ArrayList<>();
             String query = binding.etSearch.getText().toString().trim();
             if (query.isEmpty()) {
-                adapter.submitList(new ArrayList<>(subjects));
-                updateEmptyState(subjects.isEmpty());
+                adapter.submitList(new ArrayList<>(allSubjects));
+                updateSummary(allSubjects);
+                updateEmptyState(false, allSubjects.isEmpty());
             } else {
                 filterSubjects(query);
             }
         });
+    }
+
+    private void updateSummary(List<Subject> list) {
+        int count = list.size();
+        int credits = 0;
+        for (Subject s : list) credits += s.getCredits();
+
+        binding.tvStatCount.setText(String.valueOf(count));
+        binding.tvStatCredits.setText(String.valueOf(credits));
     }
 
     private void setupFab() {
@@ -137,9 +166,19 @@ public class SubjectsFragment extends Fragment {
         });
     }
 
-    private void updateEmptyState(boolean isEmpty) {
-        binding.layoutEmpty.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+    private void updateEmptyState(boolean isSearch, boolean isEmpty) {
+        binding.layoutEmpty.getRoot().setVisibility(isEmpty ? View.VISIBLE : View.GONE);
         binding.rvSubjects.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+
+        if (!isEmpty) return;
+
+        if (isSearch) {
+            binding.layoutEmpty.tvEmptyTitle.setText("Không tìm thấy");
+            binding.layoutEmpty.tvEmptySubtitle.setText("Thử từ khóa khác hoặc xóa ô tìm kiếm");
+        } else {
+            binding.layoutEmpty.tvEmptyTitle.setText("Chưa có môn học");
+            binding.layoutEmpty.tvEmptySubtitle.setText("Nhấn + để thêm môn học mới");
+        }
     }
 
     @Override

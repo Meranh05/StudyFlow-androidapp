@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.*;
 import androidx.annotation.NonNull;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.*;
 import com.example.studyflow.data.model.Subject;
 import com.example.studyflow.databinding.ItemSubjectBinding;
@@ -54,6 +55,11 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
 
     @Override public int getItemCount() { return subjects.size(); }
 
+    public Subject getSubjectAt(int position) {
+        if (position < 0 || position >= subjects.size()) return null;
+        return subjects.get(position);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         private final ItemSubjectBinding binding;
 
@@ -63,27 +69,27 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
         }
 
         void bind(Subject subject) {
-            binding.tvSubjectName.setText(subject.getName());
-            binding.tvLecturer.setText(subject.getLecturer());
-            binding.tvCredits.setText(subject.getCredits() + " tín chỉ");
+            String name = subject.getName() != null ? subject.getName() : "Môn học";
+            binding.tvSubjectName.setText(name);
 
-            // Set color circle
-            try {
-                GradientDrawable circle = new GradientDrawable();
-                circle.setShape(GradientDrawable.OVAL);
-                circle.setColor(Color.parseColor(subject.getColorTag()));
-                binding.viewColorTag.setBackground(circle);
-            } catch (Exception e) {
-                binding.viewColorTag.setBackgroundColor(Color.parseColor("#5E92F3"));
-            }
+            String lecturer = subject.getLecturer();
+            binding.tvLecturer.setText(
+                    lecturer == null || lecturer.isEmpty()
+                            ? "Chưa có giảng viên"
+                            : "GV: " + lecturer);
 
-            // Item click
+            binding.tvCredits.setText(subject.getCredits() + " TC");
+
+            String initial = name.trim().isEmpty() ? "?" : name.trim().substring(0, 1).toUpperCase(Locale.ROOT);
+            binding.tvInitial.setText(initial);
+
+            int color = parseColor(subject.getColorTag(), "#5E92F3");
+            applyColorAccent(color);
+
             binding.getRoot().setOnClickListener(v -> listener.onClick(subject));
 
-            // More button popup menu
             binding.btnMore.setOnClickListener(v -> {
-                android.widget.PopupMenu popup =
-                        new android.widget.PopupMenu(v.getContext(), v);
+                android.widget.PopupMenu popup = new android.widget.PopupMenu(v.getContext(), v);
                 popup.getMenu().add("Chỉnh sửa");
                 popup.getMenu().add("Xóa");
                 popup.setOnMenuItemClickListener(item -> {
@@ -96,6 +102,37 @@ public class SubjectAdapter extends RecyclerView.Adapter<SubjectAdapter.ViewHold
                 });
                 popup.show();
             });
+        }
+
+        private void applyColorAccent(int color) {
+            binding.viewColorBar.setBackgroundColor(color);
+
+            GradientDrawable iconBg = new GradientDrawable();
+            iconBg.setCornerRadius(14f);
+            iconBg.setColor(color);
+            binding.viewColorTag.setBackground(iconBg);
+
+            int lightBg = ColorUtils.setAlphaComponent(color, 28);
+            GradientDrawable chipBg = new GradientDrawable();
+            chipBg.setCornerRadius(20f);
+            chipBg.setColor(lightBg);
+            binding.tvCredits.setBackground(chipBg);
+            binding.tvCredits.setTextColor(darkenForText(color));
+        }
+
+        private int darkenForText(int color) {
+            float[] hsv = new float[3];
+            Color.colorToHSV(color, hsv);
+            hsv[2] = Math.max(0.25f, hsv[2] * 0.72f);
+            return Color.HSVToColor(hsv);
+        }
+
+        private int parseColor(String hex, String fallback) {
+            try {
+                return Color.parseColor(hex != null ? hex : fallback);
+            } catch (Exception e) {
+                return Color.parseColor(fallback);
+            }
         }
     }
 }

@@ -6,12 +6,13 @@ import android.os.Bundle;
 import android.view.*;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-
 import androidx.annotation.*;
 import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.example.studyflow.data.model.Subject;
 import com.example.studyflow.databinding.SheetAddSubjectBinding;
+import com.example.studyflow.R;
 import com.example.studyflow.viewmodel.SubjectViewModel;
 
 public class AddEditSubjectSheet extends BottomSheetDialogFragment {
@@ -20,9 +21,8 @@ public class AddEditSubjectSheet extends BottomSheetDialogFragment {
     private SubjectViewModel subjectViewModel;
     private String userId;
     private Subject editingSubject;
-    private String selectedColor = "#5E92F3"; // default blue
+    private String selectedColor = "#5E92F3";
 
-    // Bảng màu gợi ý
     private static final String[] COLORS = {
             "#5E92F3", "#34A853", "#EA4335",
             "#FBBC04", "#9C27B0", "#FF6D00"
@@ -36,6 +36,12 @@ public class AddEditSubjectSheet extends BottomSheetDialogFragment {
         sheet.setArguments(args);
         sheet.editingSubject = subject;
         return sheet;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(STYLE_NORMAL, R.style.CustomBottomSheetDialog);
     }
 
     @Nullable @Override
@@ -59,12 +65,12 @@ public class AddEditSubjectSheet extends BottomSheetDialogFragment {
         if (editingSubject != null) {
             prefillForm();
             binding.tvSheetTitle.setText("Chỉnh sửa môn học");
+            binding.btnDelete.setVisibility(View.VISIBLE);
         }
     }
 
-    /** Tạo 6 circle color dots bằng code */
     private void buildColorPicker() {
-        int sizePx  = (int) (40 * getResources().getDisplayMetrics().density);
+        int sizePx = (int) (40 * getResources().getDisplayMetrics().density);
         int marginPx = (int) (10 * getResources().getDisplayMetrics().density);
 
         for (String color : COLORS) {
@@ -74,13 +80,11 @@ public class AddEditSubjectSheet extends BottomSheetDialogFragment {
             params.setMarginEnd(marginPx);
             frame.setLayoutParams(params);
 
-            // Circle background
             GradientDrawable circle = new GradientDrawable();
             circle.setShape(GradientDrawable.OVAL);
             circle.setColor(Color.parseColor(color));
             frame.setBackground(circle);
 
-            // Stroke khi được chọn
             frame.setOnClickListener(v -> {
                 selectedColor = color;
                 updateColorSelection();
@@ -92,7 +96,6 @@ public class AddEditSubjectSheet extends BottomSheetDialogFragment {
     }
 
     private void updateColorSelection() {
-        int sizePx   = (int) (40 * getResources().getDisplayMetrics().density);
         int strokePx = (int) (3 * getResources().getDisplayMetrics().density);
 
         for (int i = 0; i < binding.layoutColors.getChildCount(); i++) {
@@ -102,25 +105,40 @@ public class AddEditSubjectSheet extends BottomSheetDialogFragment {
             circle.setColor(Color.parseColor(COLORS[i]));
 
             if (COLORS[i].equals(selectedColor)) {
-                circle.setStroke((int)(3 * getResources().getDisplayMetrics().density),
-                        Color.parseColor("#1A1F36"));
+                circle.setStroke(strokePx, Color.parseColor("#FF8A00"));
             }
             child.setBackground(circle);
         }
     }
 
     private void setupButtons() {
+        binding.btnClose.setOnClickListener(v -> dismiss());
         binding.btnCancel.setOnClickListener(v -> dismiss());
         binding.btnSave.setOnClickListener(v -> saveSubject());
+        binding.btnDelete.setOnClickListener(v -> confirmDelete());
+    }
+
+    private void confirmDelete() {
+        if (editingSubject == null) return;
+        new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Xóa môn học?")
+                .setMessage("Xóa \"" + editingSubject.getName() + "\" sẽ không thể hoàn tác.")
+                .setPositiveButton("Xóa", (d, w) -> {
+                    subjectViewModel.deleteSubject(userId, editingSubject.getId());
+                    dismiss();
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
     }
 
     private void saveSubject() {
-        String name     = binding.etName.getText().toString().trim();
+        String name = binding.etName.getText().toString().trim();
         String lecturer = binding.etLecturer.getText().toString().trim();
         String creditsStr = binding.etCredits.getText().toString().trim();
 
         if (name.isEmpty()) {
-            binding.tilName.setError("Vui lòng nhập tên môn học"); return;
+            binding.etName.setError("Vui lòng nhập tên môn học");
+            return;
         }
 
         int credits = 0;

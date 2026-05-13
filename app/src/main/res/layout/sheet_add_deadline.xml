@@ -1,218 +1,460 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
-    android:paddingBottom="40dp">
-
-    <!-- Handle -->
-    <View
-        android:layout_width="40dp"
-        android:layout_height="4dp"
-        android:background="@color/divider"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"/>
-
-    <!-- Title -->
-    <TextView
-        android:id="@+id/tv_sheet_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Thêm deadline"
-        android:textSize="18sp"
-        android:fontFamily="@font/inter_bold"
-        android:textColor="@color/text_primary"
-        android:layout_marginBottom="20dp"/>
-
-    <!-- Tiêu đề task -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tiêu đề *"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-        android:layout_marginBottom="14dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textCapSentences"
-            android:imeOptions="actionNext"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Mô tả -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mô tả (tùy chọn)"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-        android:layout_marginBottom="14dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textMultiLine"
-            android:minLines="2"
-            android:maxLines="4"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Môn học dropdown -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Môn học"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
-        android:layout_marginBottom="14dp">
-
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spinner_subject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="12dp"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Chọn ngày giờ -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hạn nộp *"
-        android:textSize="13sp"
-        android:textColor="@color/text_secondary"
-        android:layout_marginBottom="8dp"/>
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="14dp">
+        android:orientation="vertical"
+        android:paddingBottom="32dp">
 
-        <com.google.android.material.button.MaterialButton
+        <!-- Header -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:paddingHorizontal="8dp">
+
+            <ImageButton
+                android:id="@+id/btn_close"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_close"
+                app:tint="@color/text_primary"
+                android:contentDescription="@null"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/tv_header_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tạo Task Mới"
+                android:textSize="17sp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/text_primary"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_more_vert"
+                app:tint="@color/text_primary"
+                android:contentDescription="@null"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiêu đề"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"/>
+
+        <EditText
+            android:id="@+id/et_title"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="Nhập tên nhiệm vụ..."
+            android:textColorHint="@color/text_hint"
+            android:textSize="15sp"
+            android:textColor="@color/text_primary"
+            android:paddingHorizontal="16dp"
+            android:inputType="textCapSentences"
+            android:maxLines="1"/>
+
+        <!-- Description -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mô tả"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/et_description"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_input_field"
+            android:hint="Thêm chi tiết về task này..."
+            android:textColorHint="@color/text_hint"
+            android:textSize="15sp"
+            android:textColor="@color/text_primary"
+            android:padding="16dp"
+            android:gravity="top"
+            android:inputType="textMultiLine"/>
+
+        <!-- Deadline & Reminder -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thời gian &amp; Nhắc nhở"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E8E8E8"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btn_pick_deadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:paddingHorizontal="16dp"
+                    android:background="?attr/selectableItemBackground">
+
+                    <FrameLayout
+                        android:id="@+id/icon_deadline"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_icon_square_orange"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_calendar_vector"
+                            app:tint="@color/primary"
+                            android:contentDescription="@null"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hạn chót"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginStart="12dp"
+                        app:layout_constraintStart_toEndOf="@id/icon_deadline"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/iv_chevron_deadline"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/text_hint"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_deadline_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/primary"
+                        android:fontFamily="@font/inter_medium"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toStartOf="@id/iv_chevron_deadline"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#F0F0F0"
+                    android:layout_marginStart="64dp"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btn_pick_reminder"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:paddingHorizontal="16dp"
+                    android:background="?attr/selectableItemBackground">
+
+                    <FrameLayout
+                        android:id="@+id/icon_reminder"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_icon_square_gray"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_notification"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null"/>
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nhắc nhở"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_primary"
+                        android:layout_marginStart="12dp"
+                        app:layout_constraintStart_toEndOf="@id/icon_reminder"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/iv_chevron_reminder"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_chevron_right"
+                        android:rotation="90"
+                        app:tint="@color/text_hint"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_reminder_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1 giờ trước"
+                        android:textSize="14sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toStartOf="@id/iv_chevron_reminder"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Hidden legacy pickers -->
+        <View
             android:id="@+id/btn_pick_date"
             android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:text="Chọn ngày giờ"
-            android:textAllCaps="false"
-            android:minWidth="0dp"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
-            android:layout_marginEnd="12dp"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            app:icon="@drawable/ic_calendar"
-            app:iconPadding="8dp"
-            app:cornerRadius="10dp"/>
+            android:layout_height="0dp"
+            android:visibility="gone"/>
+
+        <View
+            android:id="@+id/btn_pick_time"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/tv_selected_date"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Chưa chọn"
-            android:textSize="13sp"
-            android:textColor="@color/primary"
-            android:maxLines="2"
-            android:ellipsize="end"/>
+            android:layout_height="0dp"
+            android:visibility="gone"/>
 
-    </LinearLayout>
-
-    <!-- Mức độ ưu tiên -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mức độ ưu tiên"
-        android:textSize="13sp"
-        android:textColor="@color/text_secondary"
-        android:layout_marginBottom="8dp"/>
-
-    <com.google.android.material.chip.ChipGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:singleSelection="true"
-        app:selectionRequired="true"
-        android:layout_marginBottom="24dp">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_low"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🟢 Thấp"
-            style="@style/Widget.Material3.Chip.Filter"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🟡 Trung bình"
-            style="@style/Widget.Material3.Chip.Filter"
-            android:checked="true"/>
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_high"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🔴 Cao"
-            style="@style/Widget.Material3.Chip.Filter"/>
-
-    </com.google.android.material.chip.ChipGroup>
-
-    <!-- Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp">
-
-        <!-- Hủy -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_cancel"
+        <TextView
+            android:id="@+id/tv_selected_time"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
 
-            android:text="Hủy"
-            android:textAllCaps="false"
-            android:textSize="15sp"
-            android:fontFamily="@font/inter_medium"
+        <TextView
+            android:id="@+id/tv_reminder_time"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"/>
 
-            android:layout_marginEnd="8dp"
+        <!-- Priority -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Độ ưu tiên"
+            android:textSize="14sp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"/>
 
-            style="@style/Widget.Material3.Button.OutlinedButton"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp"
+            android:layout_marginTop="8dp">
 
-            app:cornerRadius="16dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="@color/primary"
-            android:textColor="@color/primary"/>
+            <LinearLayout
+                android:id="@+id/btn_priority_high"
+                android:layout_width="0dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="6dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_priority_high_selector">
 
-        <!-- Lưu -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="!"
+                    android:textSize="18sp"
+                    android:textColor="@color/priority_high_text"
+                    android:fontFamily="@font/inter_bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cao"
+                    android:textSize="13sp"
+                    android:textColor="@color/priority_high_text"
+                    android:fontFamily="@font/inter_semi_bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_priority_medium"
+                android:layout_width="0dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="6dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_priority_medium_selector">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="—"
+                    android:textSize="18sp"
+                    android:textColor="@color/priority_medium_text"
+                    android:fontFamily="@font/inter_bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vừa"
+                    android:textSize="13sp"
+                    android:textColor="@color/priority_medium_text"
+                    android:fontFamily="@font/inter_semi_bold"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_priority_low"
+                android:layout_width="0dp"
+                android:layout_height="72dp"
+                android:layout_weight="1"
+                android:layout_marginStart="6dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/bg_priority_low_selector">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="≡"
+                    android:textSize="18sp"
+                    android:textColor="@color/priority_low_text"
+                    android:fontFamily="@font/inter_bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thấp"
+                    android:textSize="13sp"
+                    android:textColor="@color/priority_low_text"
+                    android:fontFamily="@font/inter_semi_bold"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Subject Tags -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:layout_marginTop="24dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Môn học / Nhãn"
+                android:textSize="14sp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:textColor="@color/text_primary"/>
+
+            <TextView
+                android:id="@+id/btn_add_subject_tag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Thêm"
+                android:textSize="14sp"
+                android:textColor="@color/primary"
+                android:fontFamily="@font/inter_medium"
+                android:padding="4dp"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_subjects"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            app:singleSelection="true"
+            app:chipSpacingHorizontal="8dp"
+            app:chipSpacingVertical="4dp"/>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:layout_weight="1"
-
-            android:text="Lưu"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="32dp"
+            android:text="Lưu task"
             android:textAllCaps="false"
-            android:textSize="15sp"
-            android:fontFamily="@font/inter_medium"
-
-            android:layout_marginStart="8dp"
-
-            style="@style/Widget.Material3.Button"
-
+            android:fontFamily="@font/inter_bold"
+            android:textSize="16sp"
             app:cornerRadius="16dp"
-            app:backgroundTint="@color/primary"
-            android:textColor="@android:color/white"/>
+            app:backgroundTint="@color/primary"/>
 
     </LinearLayout>
-
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>

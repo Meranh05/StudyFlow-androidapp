@@ -8,6 +8,9 @@ public class User {
     private String email;
     private String avatarUrl;
     private boolean notificationsEnabled;
+    private int defaultReminderMinutes;
+    private String phone;
+    private String bio;
     private Timestamp createdAt;
 
     // Constructor rỗng bắt buộc cho Firestore
@@ -18,6 +21,7 @@ public class User {
         this.displayName = displayName;
         this.email = email;
         this.notificationsEnabled = true;
+        this.defaultReminderMinutes = 60;
         this.createdAt = Timestamp.now();
     }
 
@@ -32,6 +36,12 @@ public class User {
     public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
     public boolean isNotificationsEnabled() { return notificationsEnabled; }
     public void setNotificationsEnabled(boolean v) { this.notificationsEnabled = v; }
+    public int getDefaultReminderMinutes() { return defaultReminderMinutes; }
+    public void setDefaultReminderMinutes(int v) { this.defaultReminderMinutes = v; }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+    public String getBio() { return bio; }
+    public void setBio(String bio) { this.bio = bio; }
     public Timestamp getCreatedAt() { return createdAt; }
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 }

@@ -20,6 +20,37 @@
         <item name="android:paddingBottom">14dp</item>
     </style>
 
+    <style name="Widget.StudyFlow.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+        <item name="boxBackgroundColor">@color/input_fill_soft</item>
+        <item name="boxStrokeColor">@color/auth_input_stroke</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1.5dp</item>
+        <item name="hintTextColor">@color/auth_hint_color</item>
+        <item name="android:textColorHint">@color/text_hint</item>
+        <item name="endIconTint">@color/text_primary</item>
+        <item name="errorIconTint">@color/priority_high_text</item>
+        <item name="cursorColor">@color/primary</item>
+        <item name="cursorErrorColor">@color/priority_high_text</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.StudyFlow.TextInput</item>
+    </style>
+
+    <style name="Widget.StudyFlow.TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
+        <item name="android:fontFamily">@font/inter</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+    </style>
+
+    <style name="ShapeAppearance.StudyFlow.TextInput" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
     <style name="Widget.StudyFlow.Card" parent="Widget.Material3.CardView.Elevated">
         <item name="cardCornerRadius">16dp</item>
         <item name="cardElevation">0dp</item>
@@ -41,6 +72,53 @@
     <style name="CalendarHeader" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="CustomBottomSheetDialog" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheetStyle</item>
+    </style>
+
+    <style name="CustomBottomSheetStyle" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">@style/CustomBottomSheetShapeAppearance</item>
+        <item name="backgroundTint">@color/background</item>
+    </style>
+
+    <style name="BottomNavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/primary_light</item>
+        <item name="android:width">52dp</item>
+        <item name="android:height">34dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.StudyFlow.BottomNavIndicator</item>
+    </style>
+
+    <style name="ShapeAppearance.StudyFlow.BottomNavIndicator" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="Widget.StudyFlow.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipCornerRadius">16dp</item>
+        <item name="chipMinHeight">28dp</item>
+        <item name="android:textSize">11sp</item>
+        <item name="chipBackgroundColor">@color/chip_filter_bg</item>
+        <item name="android:textColor">@color/chip_filter_text</item>
+        <item name="checkedIconVisible">false</item>
+    </style>
+
+    <style name="CalendarDayLabel">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:textColor">@color/text_hint</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+
+    <style name="CustomBottomSheetShapeAppearance" parent="">
+        <item name="cornerSizeTopLeft">24dp</item>
+        <item name="cornerSizeTopRight">24dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
     </style>
 
 </resources>

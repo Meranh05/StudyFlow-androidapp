@@ -1,76 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background">
+    android:background="@color/surface">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Lịch học"
-        android:textSize="20sp"
-        android:textColor="@color/text_primary"
-        android:padding="20dp"
-        android:paddingBottom="8dp"/>
-
-    <!-- CalendarView mặc định Android -->
-    <CalendarView
-        android:id="@+id/calendar_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="52dp"
+        android:paddingHorizontal="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lịch học"
+            android:textSize="18sp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:textColor="@color/text_primary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/divider"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
+        android:background="@color/divider"/>
 
-    <TextView
-        android:id="@+id/tv_selected_date_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hôm nay"
-        android:textSize="15sp"
-        android:textColor="@color/text_primary"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="8dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_day_deadlines"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp"
-        android:paddingTop="0dp"
-        android:clipToPadding="false"/>
+        android:layout_height="match_parent"
+        android:clipToPadding="false">
 
-    <LinearLayout
-        android:id="@+id/layout_empty_day"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="✅"
-            android:textSize="40sp"
-            android:layout_marginBottom="10dp"/>
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="24dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ngày này không có deadline"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_card_border"
+                android:layout_marginBottom="16dp"
+                android:padding="14dp">
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <ImageButton
+                            android:id="@+id/btn_prev_month"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_chevron_right"
+                            android:rotation="180"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null"/>
+
+                        <TextView
+                            android:id="@+id/tv_month_year"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:textSize="15sp"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:textColor="@color/text_primary"/>
+
+                        <ImageButton
+                            android:id="@+id/btn_next_month"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_secondary"
+                            android:contentDescription="@null"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="6dp">
+
+                        <TextView style="@style/CalendarDayLabel" android:text="CN"/>
+                        <TextView style="@style/CalendarDayLabel" android:text="T2"/>
+                        <TextView style="@style/CalendarDayLabel" android:text="T3"/>
+                        <TextView style="@style/CalendarDayLabel" android:text="T4"/>
+                        <TextView style="@style/CalendarDayLabel" android:text="T5"/>
+                        <TextView style="@style/CalendarDayLabel" android:text="T6"/>
+                        <TextView style="@style/CalendarDayLabel" android:text="T7"/>
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_calendar_days"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_day_deadlines"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"/>
+
+            <TextView
+                android:id="@+id/layout_empty_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Không có task nào"
+                android:textSize="13sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:padding="40dp"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <View
+        android:id="@+id/btn_back"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
 
 </LinearLayout>

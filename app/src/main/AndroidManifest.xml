@@ -29,7 +29,6 @@
         <activity android:name=".ui.auth.RegisterActivity" android:exported="false"/>
         <activity android:name=".ui.auth.ForgotPasswordActivity" android:exported="false"/>
         <activity android:name=".ui.main.MainActivity" android:exported="false"/>
-        <activity android:name=".ui.notes.NoteDetailActivity" android:exported="false"/>
 
         <!-- FCM Service -->
         <service

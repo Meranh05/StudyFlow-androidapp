@@ -1,38 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary brand colors -->
-    <color name="primary">#5E92F3</color>
-    <color name="primary_dark">#3D6FD6</color>
-    <color name="primary_light">#EEF3FE</color>
-    <color name="accent">#3D6FD6</color>
+    <color name="primary">#FF8A00</color>
+    <color name="primary_dark">#E67C00</color>
+    <color name="primary_light">#FFF0E0</color>
+    <color name="accent">#FF8A00</color>
 
-    <!-- Background -->
-    <color name="background">#F8FAFF</color>
+    <color name="background">#FAFAFA</color>
     <color name="surface">#FFFFFF</color>
-    <color name="surface_variant">#F0F4FF</color>
+    <color name="surface_variant">#F5F5F5</color>
 
-    <!-- Text -->
-    <color name="text_primary">#1A1F36</color>
-    <color name="text_secondary">#6B7280</color>
-    <color name="text_hint">#9CA3AF</color>
+    <color name="text_primary">#1C1C1E</color>
+    <color name="text_secondary">#8E8E93</color>
+    <color name="text_hint">#C7C7CC</color>
 
-    <!-- Priority colors (deadline cards) -->
-    <color name="priority_low_bg">#E8F5E9</color>
-    <color name="priority_low_text">#2E7D32</color>
-    <color name="priority_medium_bg">#FFF3E0</color>
-    <color name="priority_medium_text">#E65100</color>
-    <color name="priority_high_bg">#FFEBEE</color>
-    <color name="priority_high_text">#C62828</color>
+    <color name="stats_orange_bg">#FFF5EB</color>
+    <color name="stats_gray_bg">#F4F4F5</color>
+    <color name="stats_red_bg">#FFF0F0</color>
 
-    <!-- Status -->
-    <color name="status_todo">#9CA3AF</color>
-    <color name="status_in_progress">#5E92F3</color>
+    <color name="card_border">#EBEBEB</color>
+    <color name="chip_blue_bg">#EAF2FF</color>
+    <color name="chip_blue_text">#3B7DDD</color>
+    <color name="chip_green_bg">#E8F8EE</color>
+    <color name="chip_green_text">#34A853</color>
+    <color name="chip_purple_bg">#F3EDFF</color>
+    <color name="chip_purple_text">#8B5CF6</color>
+
+    <color name="priority_low_bg">#F4F4F5</color>
+    <color name="priority_low_text">#8E8E93</color>
+    <color name="priority_medium_bg">#FFF5EB</color>
+    <color name="priority_medium_text">#FF8A00</color>
+    <color name="priority_high_bg">#FFEDED</color>
+    <color name="priority_high_text">#FF3B30</color>
+
     <color name="status_done">#34A853</color>
+    <color name="status_overdue">#FF3B30</color>
 
-    <!-- Divider -->
-    <color name="divider">#E5E7EB</color>
+    <color name="calendar_today_dot">#FF8A00</color>
+    <color name="calendar_selected">#FF8A00</color>
 
-    <!-- White / Black -->
+    <color name="status_overdue_soft">#E07A7A</color>
+    <color name="status_done_soft">#5CB87A</color>
+
+    <color name="nav_icon_inactive">#B0B0B5</color>
+    <color name="nav_indicator_bg">#FFF0E0</color>
+    <color name="nav_ripple">#33FF8A00</color>
+
+    <color name="divider">#F0F0F0</color>
+    <color name="input_fill_soft">#FFFFFF</color>
+    <color name="input_border_soft">#E8EAED</color>
+    <color name="input_border_dark">#1C1C1E</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
 </resources>

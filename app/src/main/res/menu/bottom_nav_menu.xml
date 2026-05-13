@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="@string/nav_home"/>
+        android:icon="@drawable/ic_nav_home"
+        android:title="@string/nav_home"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/nav_subjects"
-        android:icon="@drawable/ic_book_vector"
-        android:title="@string/nav_subjects"/>
+        android:icon="@drawable/ic_nav_subject"
+        android:title="@string/nav_subjects"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/nav_deadlines"
-        android:icon="@drawable/ic_deadline"
-        android:title="@string/nav_deadlines"/>
+        android:icon="@drawable/ic_nav_deadlines"
+        android:title="@string/nav_deadlines"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/nav_calendar"
-        android:icon="@drawable/ic_calendar"
-        android:title="@string/nav_calendar"/>
+        android:icon="@drawable/ic_nav_calendar"
+        android:title="@string/nav_calendar"
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_person"
-        android:title="@string/nav_profile"/>
+        android:icon="@drawable/ic_nav_profile"
+        android:title="@string/nav_profile"
+        app:showAsAction="ifRoom"/>
 
 </menu>

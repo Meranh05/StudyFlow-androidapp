@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingTop="12dp"
+    android:paddingBottom="4dp">
+
+    <View
+        android:id="@+id/view_header_dot"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:background="@drawable/bg_calendar_dot"/>
+
+    <TextView
+        android:id="@+id/tv_header_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="6dp"
+        android:text="HÔM NAY"
+        android:textSize="11sp"
+        android:fontFamily="@font/inter_semi_bold"
+        android:textColor="@color/text_secondary"
+        android:letterSpacing="0.06"/>
+
+    <TextView
+        android:id="@+id/tv_header_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:textSize="10sp"
+        android:fontFamily="@font/inter_semi_bold"
+        android:textColor="@color/text_secondary"
+        android:background="@drawable/bg_stats_gray"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="2dp"/>
+
+</LinearLayout>

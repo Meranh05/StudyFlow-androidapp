@@ -4,65 +4,101 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="@color/background"
+    android:clipToPadding="false"
+    android:paddingBottom="88dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:orientation="vertical">
 
-        <!-- Header -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hồ sơ"
-            android:textSize="20sp"
-            android:fontFamily="@font/inter_bold"
-            android:textColor="@color/text_primary"
-            android:layout_marginBottom="24dp"/>
+        <!-- Header gradient -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="148dp"
+            android:background="@drawable/bg_profile_header">
 
-        <!-- Avatar + name card -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|top"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="Hồ sơ"
+                android:textColor="@color/white"
+                android:textSize="22sp"/>
+
+        </FrameLayout>
+
+        <!-- Profile card overlapping header -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="-56dp"
+            app:cardBackgroundColor="@color/surface"
             app:cardCornerRadius="20dp"
-            app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="@color/divider"
-            app:cardBackgroundColor="@color/surface">
+            app:cardElevation="2dp"
+            app:strokeColor="@color/card_border"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:padding="24dp"
-                android:gravity="center">
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
 
-                <!-- Avatar -->
                 <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="108dp"
+                    android:layout_height="108dp"
                     android:layout_marginBottom="12dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_avatar_ring"/>
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/iv_avatar"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
                         android:src="@drawable/ic_default_avatar"
                         app:civ_border_color="@color/primary_light"
-                        app:civ_border_width="3dp"/>
+                        app:civ_border_width="2dp"/>
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
-                        android:id="@+id/fab_change_avatar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/btn_change_avatar"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="bottom|end"
-                        android:src="@drawable/ic_camera"
-                        app:fabSize="mini"
-                        app:backgroundTint="@color/primary"
-                        app:tint="@color/white"/>
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardBackgroundColor="@color/primary"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="3dp">
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_camera"/>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <ProgressBar
+                        android:id="@+id/progress_avatar"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_gravity="center"
+                        android:indeterminateTint="@color/primary"
+                        android:visibility="gone"/>
 
                 </FrameLayout>
 
@@ -70,99 +106,225 @@
                     android:id="@+id/tv_display_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:fontFamily="@font/inter_semi_bold"
+                    android:fontFamily="@font/inter_bold"
                     android:textColor="@color/text_primary"
-                    android:layout_marginBottom="4dp"/>
+                    android:textSize="20sp"/>
 
                 <TextView
-                    android:id="@+id/tv_email"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tv_bio"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_secondary"/>
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:lineSpacingExtra="2dp"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="13sp"
+                    android:visibility="gone"/>
 
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Settings card -->
+        <!-- Settings section -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="Cài đặt"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"/>
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="20dp"
+            android:layout_marginHorizontal="16dp"
+            app:cardBackgroundColor="@color/surface"
+            app:cardCornerRadius="16dp"
             app:cardElevation="0dp"
-            app:strokeWidth="1dp"
-            app:strokeColor="@color/divider"
-            app:cardBackgroundColor="@color/surface">
+            app:strokeColor="@color/card_border"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:paddingVertical="4dp">
 
-                <!-- Edit profile -->
                 <LinearLayout
                     android:id="@+id/item_edit_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp"
-                    android:background="?attr/selectableItemBackground">
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_edit"
-                        app:tint="@color/text_secondary"/>
+                    <FrameLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_icon_circle_orange">
 
-                    <TextView
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_nav_profile"
+                            app:tint="@color/primary" />
+
+                    </FrameLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_weight="1"
-                        android:text="Chỉnh sửa hồ sơ"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_primary"
-                        android:layout_marginStart="14dp"/>
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:text="Thông tin cá nhân"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tên, số điện thoại, giới thiệu"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp"/>
+
+                    </LinearLayout>
 
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
+                        android:contentDescription="@null"
                         android:src="@drawable/ic_chevron_right"
                         app:tint="@color/text_hint"/>
 
                 </LinearLayout>
 
-                <View android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="@color/divider" android:layout_marginStart="50dp"/>
-
-                <!-- Notification toggle -->
-                <LinearLayout
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:orientation="horizontal"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    android:background="@color/divider"/>
+
+                <LinearLayout
+                    android:id="@+id/item_default_reminder"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:background="?attr/selectableItemBackground"
                     android:gravity="center_vertical"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp">
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_notification"
-                        app:tint="@color/text_secondary"/>
+                    <FrameLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_icon_circle_orange">
 
-                    <TextView
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_clock"
+                            app:tint="@color/primary"/>
+
+                    </FrameLayout>
+
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
                         android:layout_weight="1"
-                        android:text="Thông báo deadline"
-                        android:textSize="15sp"
-                        android:textColor="@color/text_primary"
-                        android:layout_marginStart="14dp"/>
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:text="Nhắc mặc định"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_default_reminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1 giờ trước"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp"/>
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_chevron_right"
+                        app:tint="@color/text_hint"/>
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="64dp"
+                    android:background="@color/divider"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp">
+
+                    <FrameLayout
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_icon_circle_orange">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_notification"
+                            app:tint="@color/primary"/>
+
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:text="Thông báo deadline"
+                            android:textColor="@color/text_primary"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Nhận nhắc trước hạn"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="11sp"/>
+
+                    </LinearLayout>
 
                     <com.google.android.material.switchmaterial.SwitchMaterial
                         android:id="@+id/switch_notifications"
@@ -176,16 +338,33 @@
 
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Logout button -->
+        <!-- Logout -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_logout"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:text="Đăng xuất"
-            android:textColor="@color/priority_high_text"
             style="@style/Widget.Material3.Button.OutlinedButton"
-            app:strokeColor="@color/priority_high_text"
-            app:cornerRadius="14dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:text="Đăng xuất"
+            android:textAllCaps="false"
+            android:textColor="@color/priority_high_text"
+            app:cornerRadius="14dp"
+            app:icon="@drawable/ic_logout"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconTint="@color/priority_high_text"
+            app:strokeColor="@color/priority_high_text"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="StudyFlow v1.0"
+            android:textColor="@color/text_hint"
+            android:textSize="11sp"/>
 
     </LinearLayout>
 

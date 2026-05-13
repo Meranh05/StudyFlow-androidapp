@@ -9,8 +9,20 @@ import java.util.concurrent.TimeUnit;
 public class DeadlineScheduler {
 
     public static void scheduleReminder(Context context, Deadline deadline) {
+        if (deadline == null || deadline.getDueDate() == null) return;
+        if ("DONE".equals(deadline.getStatus())) {
+            cancelReminder(context, deadline.getId());
+            return;
+        }
+
+        int reminderMinutes = deadline.getReminderMinutes();
+        if (reminderMinutes <= 0) {
+            cancelReminder(context, deadline.getId());
+            return;
+        }
+
         long dueDateMs = deadline.getDueDate().toDate().getTime();
-        long remindAt = dueDateMs - (24 * 60 * 60 * 1000);
+        long remindAt = dueDateMs - (reminderMinutes * 60_000L);
         long delay = remindAt - System.currentTimeMillis();
 
         if (delay <= 0) return;
@@ -18,6 +30,7 @@ public class DeadlineScheduler {
         Data inputData = new Data.Builder()
                 .putString(DeadlineWorker.KEY_TITLE, deadline.getTitle())
                 .putString(DeadlineWorker.KEY_DUE, DateUtils.formatDateTime(deadline.getDueDate()))
+                .putInt(DeadlineWorker.KEY_REMINDER_MINUTES, reminderMinutes)
                 .build();
 
         OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(DeadlineWorker.class)
@@ -34,6 +47,7 @@ public class DeadlineScheduler {
     }
 
     public static void cancelReminder(Context context, String deadlineId) {
-        WorkManager.getInstance(context).cancelAllWorkByTag("deadline_" + deadlineId);
+        if (deadlineId == null) return;
+        WorkManager.getInstance(context).cancelUniqueWork("deadline_" + deadlineId);
     }
 }

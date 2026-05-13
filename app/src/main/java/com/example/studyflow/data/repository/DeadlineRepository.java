@@ -32,13 +32,18 @@ public class DeadlineRepository {
                 });
     }
 
-    // Lấy deadline sắp tới trong 24h (dùng cho Home Dashboard)
+    /**
+     * Lấy deadline sắp tới trong 3 ngày tới (72 giờ)
+     * Dùng cho Dashboard Home
+     */
     public void getUpcomingDeadlines(String userId, MutableLiveData<List<Deadline>> liveData) {
         Timestamp now = Timestamp.now();
-        Timestamp tomorrow = new Timestamp(now.getSeconds() + 86400, 0);
+        // 3 ngày = 3 * 24 * 60 * 60 = 259200 giây
+        Timestamp threeDaysLater = new Timestamp(now.getSeconds() + 259200, 0);
+        
         getCollection(userId)
                 .whereGreaterThan("dueDate", now)
-                .whereLessThan("dueDate", tomorrow)
+                .whereLessThan("dueDate", threeDaysLater)
                 .whereNotEqualTo("status", "DONE")
                 .orderBy("dueDate")
                 .get()
@@ -46,9 +51,16 @@ public class DeadlineRepository {
                     List<Deadline> list = new ArrayList<>();
                     for (DocumentSnapshot doc : snapshot.getDocuments()) {
                         Deadline d = doc.toObject(Deadline.class);
-                        if (d != null) { d.setId(doc.getId()); list.add(d); }
+                        if (d != null) { 
+                            d.setId(doc.getId()); 
+                            list.add(d); 
+                        }
                     }
                     liveData.postValue(list);
+                })
+                .addOnFailureListener(e -> {
+                    // Trả về list rỗng nếu lỗi
+                    liveData.postValue(new ArrayList<>());
                 });
     }
 

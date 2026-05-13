@@ -27,7 +27,9 @@
     <string name="greeting_evening">Chào buổi tối, %s!</string>
     <string name="today_tasks">Hôm nay cần làm gì</string>
     <string name="upcoming_deadlines">Deadline sắp tới</string>
-    <string name="no_tasks_today">Hôm nay không có task nào 🎉</string>
+    <string name="no_upcoming_deadlines">Không có deadline nào sắp tới</string>
+    <string name="quick_access">Truy cập nhanh</string>
+    <string name="create_task">Tạo Task Mới</string>
 
     <!-- Subjects -->
     <string name="subjects">Môn học</string>
@@ -35,7 +37,7 @@
     <string name="subject_name">Tên môn học</string>
     <string name="lecturer">Giảng viên</string>
     <string name="credits">Số tín chỉ</string>
-    <string name="no_subjects">Chưa có môn học nào\nNhấn + để thêm môn mới</string>
+    <string name="no_subjects">Chưa có môn học nào.\nNhấn + để thêm môn mới.</string>
 
     <!-- Deadlines -->
     <string name="deadlines">Deadline</string>
@@ -50,7 +52,13 @@
     <string name="status_todo">Chưa làm</string>
     <string name="status_in_progress">Đang làm</string>
     <string name="status_done">Hoàn thành</string>
-    <string name="no_deadlines">Không có deadline nào\nTuyệt vời! 🎉</string>
+    <string name="no_deadlines">Không có deadline nào</string>
+
+    <string name="header_before">Trước</string>
+    <string name="header_today">Hôm nay</string>
+    <string name="header_tomorrow">Ngày mai</string>
+    <string name="header_upcoming">Sắp tới</string>
+    <string name="detail_title">Chi tiết</string>
 
     <!-- General -->
     <string name="save">Lưu</string>
