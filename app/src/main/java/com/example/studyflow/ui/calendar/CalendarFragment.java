@@ -30,6 +30,10 @@ public class CalendarFragment extends Fragment {
     private final Calendar displayMonth = Calendar.getInstance();
     private final Calendar selectedDay = Calendar.getInstance();
 
+    private static final int FILTER_DAY = 0;
+    private static final int FILTER_ALL = 1;
+    private int listFilter = FILTER_DAY;
+
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
@@ -52,6 +56,7 @@ public class CalendarFragment extends Fragment {
 
         setupCalendar();
         setupTaskList();
+        setupFilterChips();
         setupObservers();
 
         deadlineViewModel.startListening(userId);
@@ -62,6 +67,8 @@ public class CalendarFragment extends Fragment {
     private void setupCalendar() {
         dayAdapter = new CalendarDayAdapter((year, month, day) -> {
             selectedDay.set(year, month - 1, day);
+            listFilter = FILTER_DAY;
+            updateFilterChips();
             refreshCalendar();
             refreshTaskList();
         });
@@ -76,6 +83,32 @@ public class CalendarFragment extends Fragment {
             displayMonth.add(Calendar.MONTH, 1);
             refreshCalendar();
         });
+    }
+
+    private void setupFilterChips() {
+        binding.chipToday.setOnClickListener(v -> goToToday());
+        binding.chipAll.setOnClickListener(v -> {
+            listFilter = FILTER_ALL;
+            updateFilterChips();
+            refreshCalendar();
+            refreshTaskList();
+        });
+    }
+
+    private void goToToday() {
+        listFilter = FILTER_DAY;
+        Calendar today = Calendar.getInstance();
+        selectedDay.setTime(today.getTime());
+        displayMonth.setTime(today.getTime());
+        updateFilterChips();
+        refreshCalendar();
+        refreshTaskList();
+    }
+
+    private void updateFilterChips() {
+        boolean isToday = DateUtils.isSameDay(selectedDay, Calendar.getInstance());
+        binding.chipToday.setChecked(listFilter == FILTER_DAY && isToday);
+        binding.chipAll.setChecked(listFilter == FILTER_ALL);
     }
 
     private void setupTaskList() {
@@ -123,7 +156,8 @@ public class CalendarFragment extends Fragment {
             days.add(new CalendarDayAdapter.DayItem(0, false, false, false));
         }
         for (int d = 1; d <= daysInMonth; d++) {
-            boolean selected = selectedDay.get(Calendar.YEAR) == year
+            boolean selected = listFilter == FILTER_DAY
+                    && selectedDay.get(Calendar.YEAR) == year
                     && selectedDay.get(Calendar.MONTH) == month
                     && selectedDay.get(Calendar.DAY_OF_MONTH) == d;
             days.add(new CalendarDayAdapter.DayItem(d, true, selected, daysWithTasks.contains(d)));
@@ -136,18 +170,49 @@ public class CalendarFragment extends Fragment {
     }
 
     private void refreshTaskList() {
-        Calendar today = Calendar.getInstance();
-        Calendar yesterday = Calendar.getInstance();
-        yesterday.add(Calendar.DAY_OF_YEAR, -1);
-
         List<CalendarTaskAdapter.TaskListItem> items = new ArrayList<>();
-        appendTasksForDay(items, today);
-        appendTasksForDay(items, yesterday);
+        if (listFilter == FILTER_ALL) {
+            appendAllTasksGrouped(items);
+        } else {
+            appendTasksForDay(items, selectedDay);
+        }
 
         boolean empty = items.isEmpty();
         binding.layoutEmptyDay.setVisibility(empty ? View.VISIBLE : View.GONE);
         binding.rvDayDeadlines.setVisibility(empty ? View.GONE : View.VISIBLE);
+        if (empty) {
+            binding.layoutEmptyDay.setText(listFilter == FILTER_ALL
+                    ? "Không có deadline nào"
+                    : "Không có deadline trong ngày này");
+        }
         taskAdapter.submitList(items);
+        updateFilterChips();
+    }
+
+    private void appendAllTasksGrouped(List<CalendarTaskAdapter.TaskListItem> items) {
+        Map<Long, List<Deadline>> byDay = new TreeMap<>();
+        for (Deadline d : allDeadlines) {
+            if (d.getDueDate() == null) continue;
+            Calendar dCal = Calendar.getInstance();
+            dCal.setTime(d.getDueDate().toDate());
+            dCal.set(Calendar.HOUR_OF_DAY, 0);
+            dCal.set(Calendar.MINUTE, 0);
+            dCal.set(Calendar.SECOND, 0);
+            dCal.set(Calendar.MILLISECOND, 0);
+            long key = dCal.getTimeInMillis();
+            byDay.computeIfAbsent(key, k -> new ArrayList<>()).add(d);
+        }
+
+        for (Map.Entry<Long, List<Deadline>> entry : byDay.entrySet()) {
+            Calendar day = Calendar.getInstance();
+            day.setTimeInMillis(entry.getKey());
+            List<Deadline> dayTasks = entry.getValue();
+            Collections.sort(dayTasks, (a, b) -> a.getDueDate().compareTo(b.getDueDate()));
+            items.add(new CalendarTaskAdapter.TaskListItem(DateUtils.formatGroupHeader(day)));
+            for (Deadline d : dayTasks) {
+                items.add(new CalendarTaskAdapter.TaskListItem(d));
+            }
+        }
     }
 
     private void appendTasksForDay(List<CalendarTaskAdapter.TaskListItem> items, Calendar day) {
